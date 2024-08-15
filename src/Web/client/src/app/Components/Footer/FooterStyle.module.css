@@ -12,7 +12,7 @@
     padding: 0 20px; /* Optional: Add horizontal padding for spacing */
 }
 
-.footer-text {
+.text {
     flex: 1; /* Allows the text to take up available space */
     text-align: center; /* Center the text within its container */
 }

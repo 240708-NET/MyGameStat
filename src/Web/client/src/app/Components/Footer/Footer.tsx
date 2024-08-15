@@ -11,7 +11,7 @@ import styles from './FooterStyle.module.css';
 const Footer: React.FC = () => {
     return (
         <footer className={styles.footer}>
-            <div className="footer-text">
+            <div className={styles.text}>
                 <p>&copy; {new Date().getFullYear()} MyGameStat. All rights reserved.<br />Brought to you by <strong>Team 3</strong></p>
             </div>
             <a href="https://github.com/240708-NET/MyGameStat/" className={styles.icon} target="_blank" rel="noopener noreferrer">
