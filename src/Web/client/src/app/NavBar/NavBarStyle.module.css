@@ -1,0 +1,92 @@
+/* Container for the navbar and hamburger menu */
+.navContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, width 0.3s ease; /* Smooth transition for transform and width */
+    overflow: hidden;
+  }
+
+  /* When the menu is open (expanded state) */
+.navOpen {
+  width: 250px; /* Full width when expanded */
+}
+
+/* When the menu is closed (collapsed state) */
+.navClosed {
+  width: 80px; /* Narrow width when collapsed */
+}
+  
+  /* When the menu is open */
+  .menuOpen {
+    transform: translateX(0);
+  }
+  
+  /* When the menu is closed */
+  .menuClosed {
+    transform: translateX(-250px); /* Adjust to match the width of your sidebar */
+  }
+  
+  /* Hamburger button style */
+  .hamburgerButton {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    padding: 10px;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+  /* Hamburger icon style */
+  .hamburgerIcon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* Styles for the vertical menu */
+  .menuContainer {
+    position: relative; /* Ensures it stays within the navContainer */
+    margin-top: 60px; /* Space for hamburger icon */
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+  }
+  
+  /* Style for each menu item */
+  .menuContainer li {
+    list-style: none;
+  }
+  
+  .menuContainer a {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 20px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  /* Style for the icon */
+  .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+  
+  /* Hover effect */
+  .menuContainer a:hover {
+    background-color: #007bff;
+    color: #ffffff;
+  }
+  
+  /* Active link styling */
+  .menuContainer a.active {
+    background-color: #0056b3;
+  }
+  
