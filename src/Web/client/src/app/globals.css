@@ -1,5 +1,6 @@
 :root { /* color-scheme - you can reference these colors just by typing the name */
   --background-color: #171D25;
+  --background-color-trans: rgba(23, 29, 37, 0.3);
   --background-secondary: #252930;
   --secondary-color: #1b702c;
   --text-color: #ffffff;

@@ -7,18 +7,20 @@
     background-color: var(--background-color);
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease, width 0.3s ease; /* Smooth transition for transform and width */
+    transition: background-color 0.5s ease, transform 0.3s ease, width 0.3s ease; /* Smooth transition for background color */
     overflow: hidden;
   }
 
   /* When the menu is open (expanded state) */
 .navOpen {
-  width: 250px; /* Full width when expanded */
+  width: 160px; /* Full width when expanded */
+  background-color: var(--background-color-trans);
 }
 
 /* When the menu is closed (collapsed state) */
 .navClosed {
   width: 80px; /* Narrow width when collapsed */
+  background-color: var(--background-color);
 }
   
   /* When the menu is open */

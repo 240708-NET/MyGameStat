@@ -8,9 +8,9 @@ import styles from './NavBarStyle.module.css';
 
 const links = [
   { name: 'Home', href: '/', icon: HomeIcon },
-  { name: 'Collection', href: '/Collection', icon: FolderOpenIcon },
-  { name: 'Analytics', href: '/Analytics', icon: ChartPieIcon },
-  { name: 'Wishlist', href: '/Wishlist', icon: HeartIcon },
+  { name: 'Collection', href: '/Pages/Collection', icon: FolderOpenIcon },
+  { name: 'Analytics', href: '/Pages/Analytics', icon: ChartPieIcon },
+  { name: 'Wishlist', href: '/Pages/Wishlist', icon: HeartIcon },
 ];
 
 export default function NavLinks() {
