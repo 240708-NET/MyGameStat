@@ -32,6 +32,29 @@ MyGameStat is a full-stack web application designed to help users catalog, organ
 - Users can view the distribution of games by platform.
 - Users can analyze their most collected genres.
 
-
 ## Running the application:
-TBD
+### Backend
+The backend application is a .NET Core code-first application with MS SQL Server as the database server. In order to run the backend application data migration is required.
+- To run the backend navigate to `src/Web/API` then run the command:
+  - `dotnet run --launch-profile "https"`.
+  - View the swagger page at `https://localhost:7094/swagger/index.html`
+- For data migration navigate to `src/Web/API` then run the commands:
+  - `dotnet ef migrations add <migration name here>`
+  - `dotnet ef database update`
+  - Note:
+    - The MS SQL Server should be running.
+    - The connection string in `src/Web/API/appsettings.json` (`src/Web/API/appsettings.Development.json` for dev environment) should be valid.
+    - For fresh migrations, delete the `Migrations` folder in `src/Web/API`.
+    - For fresh database updates, nuke the database using SQL below.
+
+## Nuking a SQL Server Database (Database name is MyGameStat in example):
+```sql
+USE [master]
+GO
+ALTER DATABASE [MyGameStat] SET  SINGLE_USER WITH ROLLBACK IMMEDIATE
+GO
+USE [master]
+GO
+DROP DATABASE [MyGameStat]
+GO
+```

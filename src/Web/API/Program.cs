@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Identity;
+using MyGameStat.Infrastructure;
+using MyGameStat.Infrastructure.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,7 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
 var app = builder.Build();
+
+app.MapIdentityApi<IdentityUser>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -15,6 +28,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+//app.MapControllers();
 
 var summaries = new[]
 {

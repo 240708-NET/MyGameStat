@@ -4,6 +4,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>MyGameStat.Domain</RootNamespace>
+    <AssemblyName>MyGameStat.Domain</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
+  </ItemGroup>
 
 </Project>
