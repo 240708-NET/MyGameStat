@@ -1,0 +1,112 @@
+/* Overhead container for the login */
+.loginContainer {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+
+    min-width: 100px;
+    min-height: 50px;
+
+    background-color: var(--background-secondary);
+
+    color: white;
+}
+
+/* Login/Sign up and Logged in user button */
+.loginButton {
+    background-color: var(--background-secondary);
+    border: none;
+
+    color: white;
+    text-align: center;
+    font-size: 16px;
+}
+
+.loginButton:hover {
+    color: var(--text-hover);
+}
+
+/* Overhead container for login form */
+.loginPortal {
+    background-color: var(--background-color);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* 'X' return button for login form */
+.portalButton {
+    position:relative;
+    float: right;
+
+    background-color: var(--background-color);
+    border: none;
+
+    color: white;
+    text-align: center;
+    font-size: 16px;
+}
+
+.portalButton:hover {
+    color: var(--text-hover);
+}
+
+/* Positions labels for login form */
+.portalForm label {
+    display: block;
+    margin-top: 1em;
+}
+
+/* Colors text fields for login form */
+.portalForm label input {
+    float: left;
+    margin-right: 0.5em;
+    padding: 5px;
+
+    background-color: var(--background-secondary);
+    border: none;
+
+    color: white;
+    text-align: left;
+    font-size: 16px;
+}
+
+/* Login button for the form */
+.portalForm #formSubmit {
+    border:none;
+    background-color: var(--text-hover);
+    width: 50%;
+    padding: 5px;
+
+    color: white;
+    text-align: center;
+    font-size: 16px;
+}
+
+.portalForm #formSubmit:hover {
+    color: blue;
+}
+
+/* Shrinks 'Don't have an account?' text */
+.portalCreate p {
+    color: white;
+    font-size: 12px;
+}
+
+/* Create an account button */
+.portalCreate button {
+    border:none;
+    background-color: var(--background-color);
+
+    color: white;
+    font-size: 16px;
+}
+
+.portalCreate button:hover {
+    color: var(--text-hover);
+}
+
+/* User doesn't exist message */
+#errorMessage {
+    color: rgb(255, 83, 83);
+    font-size: 12px;
+}
