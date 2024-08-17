@@ -53,3 +53,45 @@
     font-weight: bold;
     font-size: 14px;
   }
+  .Content {
+    
+    width: 100%;
+    height: 10vh; /* Full viewport height */
+    display: flex;
+    justify-content: center;
+    text-align: center; /* Center text inside the div */
+    margin-top: 50px;
+   /* padding: 20 50px;  Optional: Add some padding for better mobile view */
+  }
+  .Content h1{
+    
+    position: absolute;
+    font-size: 6em; 
+   -webkit-text-stroke: 1px #168d16; /*create a green line around each letter*/
+   transform: translate(-5%, 5%); /*moves the text stroke to  down and right*/
+   animation: animate 10s linear infinite; /* brighten the text for 10 seconds*/
+  }
+  @keyframes animate{
+    0%
+    {
+      color: rgb(255, 255, 255); /*adjust the text color when animate is active*/
+      text-shadow: 0 0 10px #0cc3fb, /*creates shadow color when animate is active*/
+      0 0 20px #0cc3fb,
+      0 0 40px #0cc3fb,
+      0 0 60px #0cc3fb,
+      0 0 80px #0cc3fb,
+      0 0 100px #0cc3fb;
+    }
+
+  }
+  .Content h1:nth-child(1)
+  {
+    transform: translate(-5%, -5%);/*moves the first text line to the down and left*/
+    color: rgb(52, 70, 87);
+  }
+  .Content h1:nth-child(2)
+  {
+    transform: translate(-5%, -8%);/*moves the second text line to the down and left*/
+    color: rgb(61, 116, 193);
+   
+  }
