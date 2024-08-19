@@ -6,7 +6,11 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-
+         <div className = {styles.Content}>
+         <h1 >Welcome To MyGameStat!</h1>
+         <h1 >Welcome To MyGameStat!</h1>
+         
+      </div>
       <h2 className={styles.sectionTitle}>Popular Games</h2>
       <div className={styles.cardsContainer}>
 
