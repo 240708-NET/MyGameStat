@@ -13,5 +13,10 @@ public enum Status
 public class UserGame : AuditableEntity<string>
 {
     public required string GameId { get; set; }
+
     public required Status Status { get; set; }
+
+    // Navigation properties
+    public required User User { get; set; }
+    public required Game Game { get; set; }
 }
