@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyGameStat.Domain.Entity;
@@ -12,12 +11,12 @@ public class PlatformConfiguration : IEntityTypeConfiguration<Platform>
         builder.Ignore(p => p.Games);
 
         builder
-        .HasOne<IdentityUser>()
+        .HasOne<User>()
         .WithMany()
         .HasForeignKey(g => g.CreatorId);
 
         builder
-        .HasOne<IdentityUser>()
+        .HasOne<User>()
         .WithMany()
         .HasForeignKey(g => g.ModifierId);
     }

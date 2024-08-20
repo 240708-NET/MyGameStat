@@ -240,6 +240,7 @@ namespace MyGameStat.Web.API.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     GameId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Modified = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -263,6 +264,12 @@ namespace MyGameStat.Web.API.Migrations
                     table.ForeignKey(
                         name: "FK_UserGame_User_ModifierId",
                         column: x => x.ModifierId,
+                        principalSchema: "id",
+                        principalTable: "User",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserGame_User_UserId",
+                        column: x => x.UserId,
                         principalSchema: "id",
                         principalTable: "User",
                         principalColumn: "Id");
@@ -365,6 +372,11 @@ namespace MyGameStat.Web.API.Migrations
                 name: "IX_UserGame_ModifierId",
                 table: "UserGame",
                 column: "ModifierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserGame_UserId",
+                table: "UserGame",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogin_UserId",

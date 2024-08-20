@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyGameStat.Application.Repository;
 using MyGameStat.Infrastructure.Persistence;
+using MyGameStat.Infrastructure.Repository;
 
 namespace MyGameStat.Infrastructure;
 
@@ -19,7 +21,7 @@ public static class DependencyInjection
             )
         );
 
-        //services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserRepository<string>, UserRepository>();
         return services;
     }
 }
