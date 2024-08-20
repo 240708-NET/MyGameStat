@@ -6,6 +6,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
+
        <div className={styles.logoContainer}>
         <Image src="/images/logfinal.png" alt="Logo" width={120} height={100} />
       </div>
@@ -13,6 +14,7 @@ export default function Home() {
         <h1 >Welcome To MyGameStat!</h1>
 
       </div>
+
       <h2 className={styles.sectionTitle}>Popular Games</h2>
       <div className={styles.cardsContainer}>
 
