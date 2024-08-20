@@ -58,3 +58,5 @@ GO
 DROP DATABASE [MyGameStat]
 GO
 ```
+
+The UserController is for user resources not related to authentication (identity) such as accessing a user's collection of games.
