@@ -1,11 +1,18 @@
-.Container {
+.container {
     color: #fff;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh; 
     text-align: center; 
     padding: 0 20px; 
+  }
+
+  .logoContainer {
+    margin-bottom: -113px;
+    margin-right: auto;
+    margin-left: 132px;
   }
   .cardsContainer {
     display: flex;
@@ -13,6 +20,7 @@
     align-items: center;
     gap: 20px;
     margin-top: 20px;
+    flex-wrap: wrap; 
   }
   .sectionTitle {
     display: flex;
@@ -20,7 +28,10 @@
     justify-content: center;
     color: white; 
     font-size: 24px;
-    margin: 50px 450px; 
+    margin: 50px 0px; 
+    position: relative;
+    text-align: center;
+    width: 40%;
     text-transform: uppercase; 
     letter-spacing: 2px; 
   }
@@ -64,9 +75,9 @@
    /* padding: 20 50px;  Optional: Add some padding for better mobile view */
   }
   .Content h1{
-    
+     
     position: absolute;
-    font-size: 6em; 
+    font-size: 3em; 
    -webkit-text-stroke: 1px #168d16; /*create a green line around each letter*/
    transform: translate(-5%, 5%); /*moves the text stroke to  down and right*/
    animation: animate 10s linear infinite; /* brighten the text for 10 seconds*/
@@ -94,4 +105,26 @@
     transform: translate(-5%, -8%);/*moves the second text line to the down and left*/
     color: rgb(61, 116, 193);
    
+  }
+  @media (max-width: 768px) {
+    .content h1 {
+      font-size: 2em;
+    }
+  
+    .cardsContainer {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .sectionTitle {
+      font-size: 20px;
+    }
+
+    .sectionTitle::before,
+    .sectionTitle::after {
+      margin: 0 10px;
+    }
+    .card {
+      width: 90%;
+    }
   }
