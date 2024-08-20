@@ -1,9 +1,55 @@
-.Container {
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full viewport height */
-    text-align: center; /* Center text inside the div */
-    padding: 0 20px; /* Optional: Add some padding for better mobile view */
-  }
+.container {
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align items to the top of the container */
+  height: 100vh; /* Full viewport height */
+  padding: 20px; /* Optional: Adjust padding for spacing */
+}
+
+.sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px;
+  color: #fff;
+}
+
+.listContainer {
+  margin-bottom: 20px;
+  margin-left: 50%;
+}
+
+.listContainer h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.listContainer ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.listContainer ul li {
+  margin-bottom: 5px;
+  font-size: 1rem;
+}
+
+.chartContainer {
+  flex: 3;
+  display: flex;
+  flex-direction: column; /* Stack the charts vertically */
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.radarChartContainer, .pieChartContainer {
+  width: 100%; /* Ensure charts take up full available width */
+  margin-bottom: 20px; /* Add spacing between the RadarChart and PieChart */
+}
+
+.pieChartContainer {
+  margin-bottom: 0; /* No bottom margin on the last element */
+}
