@@ -1,9 +1,58 @@
-.Container {
-    color: #fff;
+.form input,
+.form select,
+.form button {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.form button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+.form button:hover {
+    background-color: #45a049;
+}
+
+.container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 100vh; /* Full viewport height */
-    text-align: center; /* Center text inside the div */
-    padding: 0 20px; /* Optional: Add some padding for better mobile view */
-  }
+    padding: 20px;
+    color: #fff;
+}
+
+.formContainer {
+    margin-bottom: 40px;
+}
+
+.collectionContainer {
+    width: 100%;
+    max-width: 1000px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.card button {
+    background-color: #f44336;
+    margin-top: 10px;
+}
+
+.card button:hover {
+    background-color: #e53935;
+}
