@@ -61,7 +61,6 @@ export default function Login() {
                 setLoggedIn(true);
                 setStatus("inactive");
 
-                /*
                 var response = await fetch('http://localhost:7904/login/', {
                     method: 'POST',
                     headers: {
@@ -84,7 +83,6 @@ export default function Login() {
                 else {
                     setResponse("Invalid username or password");
                 }
-                */
             }
 
             catch(error) {
@@ -103,21 +101,39 @@ export default function Login() {
 
         if (user != "" && pass != "") {
             try {
-                setLoggedIn(true);
-                setStatus("inactive");
-                
-                /*
-                var response = await fetch('http://localhost:7904/register', {
+                //setLoggedIn(true);
+                //setStatus("inactive");
+
+                await fetch('https://localhost:7094/register', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        email: user,
+                        email: user + "@gmail.com",
                         password: pass,
                     })
                 })
+
+                var response = await fetch('https://localhost:7094/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "email": user + "@gmail.com",
+                        "password": pass,
+                        "twoFactorCode": "",
+                        "twoFactorRecoveryCode": "",
+                    })
+                })
+
+                if (response.ok) {
+                    setLoggedIn(true);
+                    setStatus("inactive");
+                }
 
                 if (response.ok) {
                     setLoggedIn(true);
@@ -127,9 +143,6 @@ export default function Login() {
                 else {
                     setResponse("Invalid username or password");
                 }
-                */
-
-
             }
 
             catch(error) {
