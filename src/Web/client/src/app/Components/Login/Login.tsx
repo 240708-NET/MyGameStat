@@ -56,22 +56,21 @@ export default function Login() {
     const loginUser = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
 
+        console.log("login user");
+
         if (user != "" && pass != "") {
             try {
-                setLoggedIn(true);
-                setStatus("inactive");
-
-                var response = await fetch('http://localhost:7904/login/', {
+                var response = await fetch('https://localhost:7094/login/', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        "email": user,
-                        "password": pass,
-                        "twoFactorCode": "",
-                        "twoFactorRecoveryCode": "",
+                        email: user + "@gmail.com",
+                        password: pass,
+                        twoFactorCode: "",
+                        twoFactorRecoveryCode: "",
                     })
                 })
 
@@ -96,14 +95,32 @@ export default function Login() {
         }
     }
 
+    const logoutUser = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+
+        console.log("logout user");
+
+        setUser("");
+        setPass("");
+        setResponse("");
+
+        setHasLength(false);
+        setHasLower(false);
+        setHasUpper(false);
+        setHasNumber(false);
+        setHasSpecial(false);
+
+        setLoggedIn(false);
+        setStatus("inactive");
+    }
+
     const createUser = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
 
+        console.log("create user");
+
         if (user != "" && pass != "") {
             try {
-                //setLoggedIn(true);
-                //setStatus("inactive");
-
                 await fetch('https://localhost:7094/register', {
                     method: 'POST',
                     headers: {
@@ -123,17 +140,12 @@ export default function Login() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        "email": user + "@gmail.com",
-                        "password": pass,
-                        "twoFactorCode": "",
-                        "twoFactorRecoveryCode": "",
+                        email: user + "@gmail.com",
+                        password: pass,
+                        twoFactorCode: "",
+                        twoFactorRecoveryCode: "",
                     })
                 })
-
-                if (response.ok) {
-                    setLoggedIn(true);
-                    setStatus("inactive");
-                }
 
                 if (response.ok) {
                     setLoggedIn(true);
@@ -178,6 +190,7 @@ export default function Login() {
                 return (<div className={`${styles.loginContainer}`}>
                     <div className={`${styles.loginPortal}`}>
                         <button onClick={toggleActive} className={`${styles.portalButton}`}>X</button>
+                        <button onClick={logoutUser} className={`${styles.loginButton}`}>logout</button>
                     </div>
                 </div>);
             }
