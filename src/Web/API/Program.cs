@@ -1,8 +1,5 @@
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.OpenApi.Models;
-using Microsoft.VisualBasic;
 using MyGameStat.Domain.Entity;
 using MyGameStat.Infrastructure;
 using MyGameStat.Infrastructure.Persistence;
@@ -29,7 +26,6 @@ builder.Services.AddSwaggerGen(options =>
         Type = SecuritySchemeType.ApiKey
     });
     options.OperationFilter<SecurityRequirementsOperationFilter>();
-
 });
 
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -38,6 +34,20 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+var allowUI = "AllowUI";
+
+builder.Services.AddCors(options => 
+{  
+    options.AddPolicy(name: allowUI,
+                      policy  =>  
+                      {  
+                          policy.WithOrigins("http://localhost:3000")
+                          .AllowCredentials()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                      });  
+});  
 
 var app = builder.Build();
 
@@ -56,29 +66,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.UseCors(allowUI);
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+// "Database": "Server=localhost;User=sa;Password=NotPassword123;Database=MyGameStat;TrustServerCertificate=true;"
+// "Database": "Server=tcp:my-game-stat-server.database.windows.net,1433;Initial Catalog=MyGameStat;Persist Security Info=False;User ID=MyGameStatAdmin;Password=Pa$$word123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=90;"
+    
