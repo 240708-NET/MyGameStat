@@ -1,17 +1,18 @@
 using Microsoft.EntityFrameworkCore;
+using MyGameStat.Application.Repository;
 using MyGameStat.Domain.Common;
 using MyGameStat.Infrastructure.Persistence;
 
 namespace MyGameStat.Infrastructure.Repository;
 
-public class Repository<TEntity, Id> : QueryRepository<TEntity, Id> where TEntity : BaseEntity<Id>
+public class Repository<TEntity, Id> : QueryRepository<TEntity, Id>, IRepository<TEntity, Id> where TEntity : BaseEntity<Id>
 {
     public Repository(ApplicationDbContext ctx) : base(ctx) {}
 
-    public virtual async Task Create(TEntity entity)
+    public virtual async Task<int> Create(TEntity entity)
     {
         dbSet.Add(entity);
-        await ctx.SaveChangesAsync();
+        return await ctx.SaveChangesAsync();
     }
 
     public virtual async Task Delete(Id id)

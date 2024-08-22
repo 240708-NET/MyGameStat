@@ -12,7 +12,7 @@ using MyGameStat.Infrastructure.Persistence;
 namespace MyGameStat.Web.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240819212609_Initial")]
+    [Migration("20240822184012_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -178,11 +178,11 @@ namespace MyGameStat.Web.API.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTimeOffset>("Created")
+                    b.Property<DateTimeOffset>("CreateDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Developer")
                         .IsRequired()
@@ -191,12 +191,6 @@ namespace MyGameStat.Web.API.Migrations
                     b.Property<string>("Genre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("Modified")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("ModifierId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Publisher")
                         .IsRequired()
@@ -209,11 +203,17 @@ namespace MyGameStat.Web.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTimeOffset>("UpdateDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdaterId")
+                        .HasColumnType("nvarchar(256)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
 
-                    b.HasIndex("ModifierId");
+                    b.HasIndex("UpdaterId");
 
                     b.ToTable("Game");
                 });
@@ -223,31 +223,31 @@ namespace MyGameStat.Web.API.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTimeOffset>("Created")
+                    b.Property<DateTimeOffset>("CreateDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Manufacturer")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("Modified")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("ModifierId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("UpdateDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdaterId")
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
 
-                    b.HasIndex("ModifierId");
+                    b.HasIndex("UpdaterId");
 
                     b.ToTable("Platform");
                 });
@@ -301,6 +301,7 @@ namespace MyGameStat.Web.API.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -322,24 +323,24 @@ namespace MyGameStat.Web.API.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTimeOffset>("Created")
+                    b.Property<DateTimeOffset>("CreateDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("GameId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTimeOffset>("Modified")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("ModifierId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("UpdateDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdaterId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -349,8 +350,6 @@ namespace MyGameStat.Web.API.Migrations
                     b.HasIndex("CreatorId");
 
                     b.HasIndex("GameId");
-
-                    b.HasIndex("ModifierId");
 
                     b.HasIndex("UserId");
 
@@ -427,45 +426,44 @@ namespace MyGameStat.Web.API.Migrations
                 {
                     b.HasOne("MyGameStat.Domain.Entity.User", null)
                         .WithMany()
-                        .HasForeignKey("CreatorId");
+                        .HasForeignKey("CreatorId")
+                        .HasPrincipalKey("UserName");
 
                     b.HasOne("MyGameStat.Domain.Entity.User", null)
                         .WithMany()
-                        .HasForeignKey("ModifierId");
+                        .HasForeignKey("UpdaterId")
+                        .HasPrincipalKey("UserName");
                 });
 
             modelBuilder.Entity("MyGameStat.Domain.Entity.Platform", b =>
                 {
                     b.HasOne("MyGameStat.Domain.Entity.User", null)
                         .WithMany()
-                        .HasForeignKey("CreatorId");
+                        .HasForeignKey("CreatorId")
+                        .HasPrincipalKey("UserName");
 
                     b.HasOne("MyGameStat.Domain.Entity.User", null)
                         .WithMany()
-                        .HasForeignKey("ModifierId");
+                        .HasForeignKey("UpdaterId")
+                        .HasPrincipalKey("UserName");
                 });
 
             modelBuilder.Entity("MyGameStat.Domain.Entity.UserGame", b =>
                 {
-                    b.HasOne("MyGameStat.Domain.Entity.User", "User")
+                    b.HasOne("MyGameStat.Domain.Entity.User", null)
                         .WithMany()
-                        .HasForeignKey("CreatorId");
+                        .HasForeignKey("CreatorId")
+                        .HasPrincipalKey("UserName");
 
-                    b.HasOne("MyGameStat.Domain.Entity.Game", "Game")
+                    b.HasOne("MyGameStat.Domain.Entity.Game", null)
                         .WithMany()
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyGameStat.Domain.Entity.User", null)
-                        .WithMany()
-                        .HasForeignKey("ModifierId");
-
-                    b.HasOne("MyGameStat.Domain.Entity.User", null)
+                    b.HasOne("MyGameStat.Domain.Entity.User", "User")
                         .WithMany("UserGames")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Game");
 
                     b.Navigation("User");
                 });

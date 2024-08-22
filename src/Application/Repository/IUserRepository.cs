@@ -4,5 +4,5 @@ namespace MyGameStat.Application.Repository;
 
 public interface IUserRepository<Id> : IQueryRepository<User, Id>
 {
-    public Task<User?> GetByUserName(string UserName);
+    Task<User?> GetByUserName(string UserName);
 }

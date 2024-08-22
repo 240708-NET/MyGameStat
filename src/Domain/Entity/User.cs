@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using MyGameStat.Domain.Common;
 
 namespace MyGameStat.Domain.Entity;
 

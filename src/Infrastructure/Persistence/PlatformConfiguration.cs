@@ -11,13 +11,19 @@ public class PlatformConfiguration : IEntityTypeConfiguration<Platform>
         builder.Ignore(p => p.Games);
 
         builder
+        .Property(p => p.Id)
+        .ValueGeneratedOnAdd();
+
+        builder
         .HasOne<User>()
         .WithMany()
+        .HasPrincipalKey(u => u.UserName)
         .HasForeignKey(g => g.CreatorId);
 
         builder
         .HasOne<User>()
         .WithMany()
-        .HasForeignKey(g => g.ModifierId);
+        .HasPrincipalKey(u => u.UserName)
+        .HasForeignKey(g => g.UpdaterId);
     }
 }
