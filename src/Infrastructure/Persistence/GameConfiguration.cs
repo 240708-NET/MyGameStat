@@ -11,17 +11,23 @@ public class GameConfiguration : IEntityTypeConfiguration<Game>
         builder.Ignore(g => g.Platforms);
 
         builder
+        .Property(g => g.Id)
+        .ValueGeneratedOnAdd();
+
+        builder
         .HasMany<Platform>()
         .WithMany();
 
         builder
         .HasOne<User>()
         .WithMany()
+        .HasPrincipalKey(u => u.UserName)
         .HasForeignKey(g => g.CreatorId);
 
         builder
         .HasOne<User>()
         .WithMany()
-        .HasForeignKey(g => g.ModifierId);
+        .HasPrincipalKey(u => u.UserName)
+        .HasForeignKey(g => g.UpdaterId);
     }
 }

@@ -17,6 +17,7 @@ public class UserGame : AuditableEntity<string>
     public required Status Status { get; set; }
 
     // Navigation properties
-    public required User User { get; set; }
-    public required Game Game { get; set; }
+    public User? User { get; set; }
+
+    public Game? Game { get; set; }
 }

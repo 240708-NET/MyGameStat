@@ -14,7 +14,7 @@ public class UserController(IUserRepository<string> repository) : ControllerBase
     public async Task<IActionResult> GetById(string id)
     {
         var user = await repository.GetById(id);
-        return user is not null ? Ok(user) : NotFound($"No user with id {id} not found");
+        return user is not null ? Ok(user) : NotFound($"User with id {id} not found");
     }
 
     [Authorize]

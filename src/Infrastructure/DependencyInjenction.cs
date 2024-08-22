@@ -22,6 +22,8 @@ public static class DependencyInjection
         );
 
         services.AddScoped<IUserRepository<string>, UserRepository>();
+        services.AddScoped<IUserGameRepository, UserGameRepository>();
+        services.AddScoped<IGameRepository, GameRepository>();
         return services;
     }
 }

@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using MyGameStat.Application.Repository;
-using MyGameStat.Domain.Common;
 using MyGameStat.Infrastructure.Persistence;
 
 namespace MyGameStat.Infrastructure.Repository;
