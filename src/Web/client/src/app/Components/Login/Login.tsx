@@ -92,13 +92,13 @@ export default function Login() {
                     </form>
 
                     {userError == true && (
-                        <p id={`${styles.errorMessage}`}>User doesnt exist!</p>
+                        <p id={`${styles.errorMessage}`}>User doesn't exist!</p>
                     )}
 
                     <br />
 
                     <div className={`${styles.portalCreate}`}>
-                        <p>Dont have an account?</p>
+                        <p>Don't have an account?</p>
                         <button>Create an account</button>
                     </div>
                 </div>
