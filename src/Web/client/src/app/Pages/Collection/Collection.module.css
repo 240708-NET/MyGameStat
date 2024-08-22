@@ -6,53 +6,126 @@
     border: none;
     border-radius: 5px;
     width: 100%;
+    box-sizing: border-box; 
 }
 
-.form button {
-    background-color: #4CAF50;
+.addButton{
+    background-color: #049cad;
     color: white;
     cursor: pointer;
 }
 
-.form button:hover {
-    background-color: #45a049;
+.addButton:hover {
+    background-color: #6df2fc;
+}
+
+.updateButton {
+    background-color: #6ba9f6;
+}
+
+.updateButton:hover {
+    background-color: #a8c4f9;
 }
 
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 50px;
     color: #fff;
+    margin: 20px;
+    padding-left: 175px;
+    padding-right: 175px;
+    padding-top: 50px; 
+    padding-bottom: 50px;
 }
 
-.formContainer {
-    margin-bottom: 40px;
-}
-
+.formContainer,
 .collectionContainer {
     width: 100%;
-    max-width: 1000px;
+    max-width: 975px; 
+    margin: 25px auto; 
+    padding: 20px;
+    background-color: #444;
+    border-radius: 10px;
 }
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
     gap: 20px;
+    border-radius: 10px; 
 }
 
 .card {
     background-color: #333;
     padding: 20px;
     border-radius: 10px;
-    text-align: center;
+    text-align: left;
+    transition: transform 0.3s ease;
+    height: 100%;
+    margin-top: 15px;
+    box-shadow: 0 0 20px rgba(12, 195, 251, 0.8);
+    position: relative; 
 }
 
-.card button {
-    background-color: #f44336;
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card .editButton,
+.card .deleteButton {
+    background-color: #246d0b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
     margin-top: 10px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.card button:hover {
-    background-color: #e53935;
+.card .editButton {
+    left: 10px;
+    background-color: #6ba9f6;
+    color: white;
+}
+
+.card .editButton:hover {
+    background-color: #6df2fc;
+}
+
+.card .deleteButton {
+    background-color: #f44336;
+    color: white;
+    right: 10px;
+}
+
+.card .deleteButton:hover {
+    background-color: #f69391;
+}
+
+@media (max-width: 1200px) {
+    .formContainer,
+    .collectionContainer {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 992px) {
+    .formContainer,
+    .collectionContainer {
+        max-width: 768px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .formContainer,
+    .collectionContainer {
+        max-width: calc(100% - 40px); 
+        margin: 15px auto;
+        padding: 15px;
+    }
 }

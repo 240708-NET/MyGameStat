@@ -15,6 +15,7 @@ const CollectionPage: React.FC = () => {
         platform: 'Console',
         manufacturer: ''
     });
+    const [editIndex, setEditIndex] = useState<number | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setNewGame({ ...newGame, [e.target.name]: e.target.value });
@@ -22,7 +23,14 @@ const CollectionPage: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setGames([...games, newGame]);
+        if (editIndex !== null) {
+            const updatedGames = [...games];
+            updatedGames[editIndex] = newGame;
+            setGames(updatedGames);
+            setEditIndex(null);
+        } else {
+            setGames([...games, newGame]);
+        }
         setNewGame({
             title: '',
             status: 'Owned',
@@ -40,25 +48,33 @@ const CollectionPage: React.FC = () => {
         setGames(updatedGames);
     };
 
+    const handleEdit = (index: number) => {
+        setEditIndex(index);
+        setNewGame(games[index]);
+    };
+
     return (
         <main className={styles.container}>
             <div className={styles.formContainer}>
-                <h2>Add New Game</h2>
+                <h2>{editIndex !== null ? 'Edit Game' : 'Add New Game'}</h2>
                 <form onSubmit={handleSubmit} className={styles.form}>
-                    <input 
-                        type="text" 
-                        name="title" 
-                        placeholder="Game Title" 
-                        value={newGame.title} 
-                        onChange={handleChange} 
-                        required 
+                    <label htmlFor="title">Game Title:</label>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Game Title"
+                        value={newGame.title}
+                        onChange={handleChange}
+                        required
                     />
+                    <label htmlFor="status">Status:</label>
                     <select name="status" value={newGame.status} onChange={handleChange}>
                         <option value="Owned">Owned</option>
                         <option value="Wishlist">Wishlist</option>
                         <option value="Playing">Playing</option>
                         <option value="Completed">Completed</option>
                     </select>
+                    <label htmlFor="genre">Genre:</label>
                     <select name="genre" value={newGame.genre} onChange={handleChange}>
                         <option value="Action">Action</option>
                         <option value="Adventure">Adventure</option>
@@ -67,43 +83,50 @@ const CollectionPage: React.FC = () => {
                         <option value="Strategy">Strategy</option>
                         <option value="Sports">Sports</option>
                     </select>
-                    <input 
-                        type="date" 
-                        name="releaseDate" 
-                        value={newGame.releaseDate} 
-                        onChange={handleChange} 
-                        required 
+                    <label htmlFor="releaseDate">Release Date:</label>
+                    <input
+                        type="date"
+                        name="releaseDate"
+                        value={newGame.releaseDate}
+                        onChange={handleChange}
+                        required
                     />
-                    <input 
-                        type="text" 
-                        name="developer" 
-                        placeholder="Developer" 
-                        value={newGame.developer} 
-                        onChange={handleChange} 
-                        required 
+                    <label htmlFor="developer">Developer:</label>
+                    <input
+                        type="text"
+                        name="developer"
+                        placeholder="Developer"
+                        value={newGame.developer}
+                        onChange={handleChange}
+                        required
                     />
-                    <input 
-                        type="text" 
-                        name="publisher" 
-                        placeholder="Publisher" 
-                        value={newGame.publisher} 
-                        onChange={handleChange} 
-                        required 
+                    <label htmlFor="publisher">Publisher:</label>
+                    <input
+                        type="text"
+                        name="publisher"
+                        placeholder="Publisher"
+                        value={newGame.publisher}
+                        onChange={handleChange}
+                        required
                     />
+                    <label htmlFor="platform">Platform:</label>
                     <select name="platform" value={newGame.platform} onChange={handleChange}>
                         <option value="Console">Console</option>
                         <option value="PC">PC</option>
                         <option value="Mobile">Mobile</option>
                     </select>
-                    <input 
-                        type="text" 
-                        name="manufacturer" 
-                        placeholder="Manufacturer" 
-                        value={newGame.manufacturer} 
-                        onChange={handleChange} 
-                        required 
+                    <label htmlFor="manufacturer">Manufacturer:</label>
+                    <input
+                        type="text"
+                        name="manufacturer"
+                        placeholder="Manufacturer"
+                        value={newGame.manufacturer}
+                        onChange={handleChange}
+                        required
                     />
-                    <button type="submit">Add Game</button>
+                    <button type="submit" className={editIndex !== null ? styles.updateButton : styles.addButton}>
+                        {editIndex !== null ? 'Update Game' : 'Add Game'}
+                    </button>
                 </form>
             </div>
             <div className={styles.collectionContainer}>
@@ -119,7 +142,14 @@ const CollectionPage: React.FC = () => {
                             <p>Publisher: {game.publisher}</p>
                             <p>Platform: {game.platform}</p>
                             <p>Manufacturer: {game.manufacturer}</p>
-                            <button onClick={() => handleDelete(index)}>Delete</button>
+                            <div className={styles.cardButtons}>
+                                <button onClick={() => handleEdit(index)} className={styles.editButton}>
+                                    Edit
+                                </button>
+                                <button onClick={() => handleDelete(index)} className={styles.deleteButton}>
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
