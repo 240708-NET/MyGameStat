@@ -43,7 +43,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: allowUI,
                       policy  =>  
                       {  
-                          policy.WithOrigins("http://localhost:3000" , "http://mygamestat-frontend-dev")
+                          policy.WithOrigins("http://localhost:3000" )
                           .AllowCredentials()
                           .AllowAnyMethod()
                           .AllowAnyHeader();
