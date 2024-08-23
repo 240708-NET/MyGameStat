@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import styles from './Collection.module.css';
 
 const CollectionPage: React.FC = () => {
@@ -17,12 +17,24 @@ const CollectionPage: React.FC = () => {
     });
     const [editIndex, setEditIndex] = useState<number | null>(null);
 
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem('loggedInUser');
+        const savedGames = JSON.parse(localStorage.getItem('userGames') || '[]');
+
+        // Filter games to show only those belonging to the logged-in user
+        const userGames = savedGames.filter((game: any) => game.user === loggedInUser);
+        setGames(userGames);
+    }, []);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setNewGame({ ...newGame, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        const loggedInUser = localStorage.getItem('loggedInUser');
+
         if (editIndex !== null) {
             const updatedGames = [...games];
             updatedGames[editIndex] = newGame;
@@ -31,6 +43,7 @@ const CollectionPage: React.FC = () => {
         } else {
             setGames([...games, newGame]);
         }
+        localStorage.setItem('userGames', JSON.stringify([...games, { ...newGame, user: loggedInUser }]));
         setNewGame({
             title: '',
             status: 'Owned',
@@ -46,6 +59,7 @@ const CollectionPage: React.FC = () => {
     const handleDelete = (index: number) => {
         const updatedGames = games.filter((_, i) => i !== index);
         setGames(updatedGames);
+        localStorage.setItem('userGames', JSON.stringify(updatedGames));
     };
 
     const handleEdit = (index: number) => {
@@ -69,8 +83,8 @@ const CollectionPage: React.FC = () => {
                     />
                     <label htmlFor="status">Status:</label>
                     <select name="status" value={newGame.status} onChange={handleChange}>
-                        <option value="Owned">Owned</option>
-                        <option value="Wishlist">Wishlist</option>
+                        {/* <option value="Owned">Owned</option> */}
+                        {/* <option value="Wishlist">Wishlist</option> */}
                         <option value="Playing">Playing</option>
                         <option value="Completed">Completed</option>
                     </select>

@@ -77,6 +77,7 @@ export default function Login() {
                 if (response.ok) {
                     setLoggedIn(true);
                     setStatus("inactive");
+                     sessionStorage.setItem('userName', user);
                 }
 
                 else {
