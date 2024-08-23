@@ -1,67 +1,54 @@
 'use client';
-import { PieChart, Pie, Legend  } from "recharts";
+import React, { useEffect, useState } from 'react';
+import { PieChart, Pie, Legend, Cell } from "recharts";
 
-const pieChart: React.FC = () => {
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4561', '#66CCFF'];
 
-    const data01 = [
-        {
-          "name": "Group A",
-          "value": 400
-        },
-        {
-          "name": "Group B",
-          "value": 300
-        },
-        {
-          "name": "Group C",
-          "value": 300
-        },
-        {
-          "name": "Group D",
-          "value": 200
-        },
-        {
-          "name": "Group E",
-          "value": 278
-        },
-        {
-          "name": "Group F",
-          "value": 189
-        }
-      ];
-      const data02 = [
-        {
-          "name": "Group A",
-          "value": 2400
-        },
-        {
-          "name": "Group B",
-          "value": 4567
-        },
-        {
-          "name": "Group C",
-          "value": 1398
-        },
-        {
-          "name": "Group D",
-          "value": 9800
-        },
-        {
-          "name": "Group E",
-          "value": 3908
-        },
-        {
-          "name": "Group F",
-          "value": 4800
-        }
-      ];
+const CustomPieChart: React.FC = () => {
+    const [chartData, setChartData] = useState<any[]>([]);
+
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem('loggedInUser');
+        const savedGames = JSON.parse(localStorage.getItem('userGames') || '[]');
+
+        // Filter games to show only those belonging to the logged-in user
+        const userGames = savedGames.filter((game: any) => game.user === loggedInUser);
+
+        // Calculate the distribution of games by genre (or any other property)
+        const genreCounts = userGames.reduce((acc: any, game: any) => {
+            acc[game.genre] = (acc[game.genre] || 0) + 1;
+            return acc;
+        }, {});
+
+        // Prepare data for the PieChart
+        const data = Object.keys(genreCounts).map((genre, index) => ({
+            name: genre,
+            value: genreCounts[genre],
+            color: COLORS[index % COLORS.length]  // Assign a color from the COLORS array
+        }));
+
+        setChartData(data);
+    }, []);
 
     return (
         <PieChart width={730} height={250}>
-        <Pie data={data02} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#82ca9d" label />
-        <Legend/>
+            <Pie 
+                data={chartData} 
+                dataKey="value" 
+                nameKey="name" 
+                cx="50%" 
+                cy="50%" 
+                innerRadius={60} 
+                outerRadius={80} 
+                label
+            >
+                {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+            </Pie>
+            <Legend/>
         </PieChart>
     );
 };
 
-export default pieChart;
+export default CustomPieChart;
