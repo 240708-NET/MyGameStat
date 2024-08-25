@@ -7,6 +7,7 @@ using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseUrls("http://*:7094");
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -42,7 +43,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: allowUI,
                       policy  =>  
                       {  
-                          policy.WithOrigins("http://localhost:3000")
+                          policy.WithOrigins("http://localhost:3000" )
                           .AllowCredentials()
                           .AllowAnyMethod()
                           .AllowAnyHeader();
