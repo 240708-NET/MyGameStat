@@ -26,12 +26,13 @@ public class UserGameRepository(ApplicationDbContext ctx) : Repository<UserGame,
                     e.Platform.Id != null && e.Platform.Id.Equals(userGame.Platform.Id));
     }
 
-    public ICollection<UserGame> GetByUserId(string? id)
+    public ICollection<UserGame> GetByUserIdAndStatus(string? id, Status? status)
     {
         return [.. dbSet
-                    .Where(u => id != null && id.Equals(u.CreatorId))
-                    .Include(u => u.Game)
-                    .Include(u => u.Platform)
-                    .Include(u => u.User)];
+                    .Where(e => id != null && id.Equals(e.CreatorId))
+                    .Where(e => status == null || status == e.Status)
+                    .Include(e => e.Game)
+                    .Include(e => e.Platform)
+                    .Include(e => e.User)];
     }
 }
