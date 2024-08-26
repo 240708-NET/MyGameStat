@@ -1,0 +1,23 @@
+.sliderContainer {
+    width: 100%;
+}
+
+.slide {
+    padding: 20px; 
+    text-align: left; 
+}
+
+.gameImage {
+    max-width: 100%; 
+    height: auto; 
+    display: block; 
+    margin-bottom: 10px;
+    box-shadow: 0 0 20px rgba(12, 195, 251, 0.8);
+    object-fit: cover;
+}
+
+.gameName {
+    padding: 10px;
+    border-bottom: 2px solid #2c6a82;
+    margin-bottom: 10px; 
+}
