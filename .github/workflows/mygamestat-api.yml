@@ -10,6 +10,7 @@ on:
     # Specify the folder that trigger build and deployment on changes 
     paths:
       - /src/web/API/**
+      
   pull_request:    
     branches:
       - main
