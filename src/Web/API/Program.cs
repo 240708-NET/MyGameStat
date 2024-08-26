@@ -44,7 +44,7 @@ builder.Services.AddCors(options =>
                       policy  =>  
                       {  
                         //we must allow communication from any origin (.SetIsOriginAllowed (hostname => true)  checks origins individually and checks credential )
-                          policy.WithOrigins("http://localhost:3000" )
+                          policy.WithOrigins("http://localhost:3000")
                           .AllowCredentials()
                           .AllowAnyMethod()
                           .AllowAnyHeader();

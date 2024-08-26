@@ -1,4 +1,4 @@
-name: API Build and Deploy
+name: FRONTEND Build and Deploy
 
 #triggers
 on:
@@ -8,11 +8,15 @@ on:
     branches:
       - main
     # Specify the folder that trigger build and deployment on changes 
-    
+    paths:
+      - /src/web/client/**
+      
   pull_request:    
     branches:
       - main
-  workflow_dispatch: 
+    paths:
+      - src/web/client/**
+  workflow_dispatch:
 
 # tasks to complete
 jobs:
@@ -22,30 +26,24 @@ jobs:
     runs-on: Linux-latest
     #what steps we take to complete the job
     steps:
-    - name: build-sanity-check
-      run: echo "Keep building"
-
-    #instruction to tell the VM will be based on .NET version 8
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-
+    #instruction to tell the VM will be based on react
+    - name: Setup react
+      uses: actions/setup-npm
     # We tell the VM the source code
     - name: Checkout The Repo
       uses: actions/checkout@v4
 
      #install dependancies 
-    - name: Dotnet Restore
-      run: dotnet restore ./
+    - name: npm Restore
+      run: npm restore ./src/web/client/
 
-      #start building .net project
-    - name: Dotnet Build
-      run: dotnet build --no-restore ./
+      #start building react project
+    - name: npm Build
+      run:  npm build --no-restore ./src/web/client/
     
     # Test
-    - name: Dotnet Test
-      run: dotnet test --no-build --verbosity normal ./
+    - name: npm Test
+      run: npm test --no-build --verbosity normal ./src/web/client/
     
       #containerize
   dockerize:
@@ -53,10 +51,7 @@ jobs:
     runs-on: Linux-latest
 
     steps:
-    # Check if the system is working
-    - name: dockerize-sanity-check
-      run: echo "Keep dockerizing"
-
+    
     # Specify the source code
     - name: Checkout Source
       uses: actions/checkout@v4
@@ -79,8 +74,9 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         # specify the location of the docker file
-        context: ./
+        context: ./src/web/client/
         push: true
+        tags: mygamestat-client:${{ github.sha }} 
         
 
   deploy:

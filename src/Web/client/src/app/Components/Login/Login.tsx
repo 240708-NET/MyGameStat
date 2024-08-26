@@ -60,7 +60,7 @@ export default function Login() {
 
         if (user != "" && pass != "") {
             try {
-                var response = await fetch('http://localhost:7094/login/', {
+                var response = await fetch('https://localhost:7094/login/', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -122,7 +122,7 @@ export default function Login() {
 
         if (user != "" && pass != "") {
             try {
-                await fetch('http://localhost:7094/register', {
+                await fetch('https://localhost:7094/register', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -134,7 +134,7 @@ export default function Login() {
                     })
                 })
 
-                var response = await fetch('http://localhost:7094/login/', {
+                var response = await fetch('https://localhost:7094/login/', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
