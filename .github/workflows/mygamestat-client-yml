@@ -48,7 +48,7 @@ jobs:
       #containerize
   dockerize:
     needs: build
-    runs-on: Linux-latest
+    runs-on: ubuntu-latest
 
     steps:
     
@@ -82,7 +82,7 @@ jobs:
   deploy:
     # Specify which job needs to be finished first
     needs: dockerize
-    runs-on: Linux-latest
+    runs-on: ubuntu-latest
 
     steps:
     

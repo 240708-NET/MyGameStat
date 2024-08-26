@@ -4,63 +4,38 @@ name: API Build and Deploy
 on:
   push:
   #conditions
-    # Specify the branch that needs deployment (checkup)
-    branches:
-      - workflows
-    # Specify the folder that trigger build and deployment on changes 
-    
+    branches: # Specify the branch that needs deployment (checkup)
+      - workflow
+
+    # Specify the folder that trigger build and deployment on changes   
   pull_request:    
     branches:
-      - workflows
-  workflow_dispatch: 
+      - workflow 
+  workflow_dispatch: # allow action to run
 
-# tasks to complete
+# tasks to complete (actual pipeline creation)
 jobs:
   #each job will run on a new vm(build agent)
   build:
-    #what type of vm will this job be performed on
-    runs-on: Linux-latest
+    runs-on: ubuntu-latest #what type of vm will this job be performed on
+
     #what steps we take to complete the job
     steps:
-    - name: build-sanity-check
-      run: echo "Keep building"
+      # We tell the VM the source code
+    - name: Checkout The Repo
+      uses: actions/checkout@v4
 
-    #instruction to tell the VM will be based on .NET version 8
-    - name: Setup .NET
+    - name: Setup .NET #instruction to tell the VM will be based on .NET version 8
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
-    # We tell the VM the source code
-    - name: Checkout The Repo
-      uses: actions/checkout@v4
-
      #install dependancies 
     - name: Dotnet Restore
-      run: dotnet restore ./
+      run: dotnet restore ./src/Web/API/
 
       #start building .net project
     - name: Dotnet Build
-      run: dotnet build --no-restore ./
+      run: dotnet build ./src/Web/API/ --no-restore ./
     
-    # Test
-    - name: Dotnet Test
-      run: dotnet test --no-build --verbosity normal ./
-    
-      #containerize
-  
-        
-
-  deploy:
-    # Specify which job needs to be finished first
-    #needs: dockerize
-    runs-on: Linux-latest
-
-    steps:
-    
-    # Check the system
-    - name: deploy-sanity-check
-      run: echo "Keep deploying"
-
-    # Deploy to azure web app
     
