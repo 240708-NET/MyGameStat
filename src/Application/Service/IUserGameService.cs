@@ -5,7 +5,7 @@ namespace MyGameStat.Application.Service;
 
 public interface IUserGameService<TEntity, ID> where TEntity : BaseEntity<ID>
 {
-    ICollection<TEntity> GetByUserIdAndStatus(ID? id, Status? status);
+    ICollection<TEntity> GetByUserIdAndFilter(ID? id, Status? status, string? genre, string? platformName);
     ID? Upsert(string? userId, TEntity entity);
     int Update(string? userId, TEntity entity);
     void Delete(ID id);

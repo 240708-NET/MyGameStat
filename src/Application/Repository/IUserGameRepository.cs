@@ -4,5 +4,5 @@ namespace MyGameStat.Application.Repository;
 
 public interface IUserGameRepository : IRepository<UserGame, string>
 {
-    ICollection<UserGame> GetByUserIdAndStatus(string? id, Status? status);
+    ICollection<UserGame> GetByUserIdAndFilter(string? id, Status? status, string? genre, string? platformName);
 }
