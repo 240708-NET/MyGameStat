@@ -215,7 +215,7 @@ export default function Login() {
 
                         <br />
                         <div className={`${styles.portalCreate}`}>
-                            <p>Dont have an account?</p>
+                            <p>Don't have an account?</p>
                             <button onClick={toggleCreate}>Create an account</button>
                         </div>
                     </div>
