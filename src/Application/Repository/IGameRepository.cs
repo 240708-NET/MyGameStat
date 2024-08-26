@@ -4,5 +4,5 @@ namespace MyGameStat.Application.Repository;
 
 public interface IGameRepository : IRepository<Game, string>
 {
-    Task<ICollection<Game>> GetGamesByTitle(string title);
+    ICollection<Game> GetByTitle(string title);
 }

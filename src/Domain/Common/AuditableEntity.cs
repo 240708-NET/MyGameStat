@@ -2,16 +2,12 @@ using System.Text.Json.Serialization;
 
 namespace MyGameStat.Domain.Common;
 
-public abstract class AuditableEntity<T> : BaseEntity<T>
+public abstract class AuditableEntity<Id> : BaseEntity<Id>
 {
     [JsonIgnore]
     public DateTimeOffset CreateDate { get; set; } = DateTimeOffset.UtcNow;
-
-    // TODO: Make non-nullable
-    public T? CreatorId { get; set; }
-
+    public required Id CreatorId { get; set; }
     [JsonIgnore]
     public DateTimeOffset UpdateDate { get; set; } = DateTimeOffset.UtcNow;
-
-    public T? UpdaterId { get; set; }
+    public Id? UpdaterId { get; set; }
 }

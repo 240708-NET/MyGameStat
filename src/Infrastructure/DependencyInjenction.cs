@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyGameStat.Application.Repository;
+using MyGameStat.Application.Service;
+using MyGameStat.Domain.Entity;
 using MyGameStat.Infrastructure.Persistence;
 using MyGameStat.Infrastructure.Repository;
 
@@ -24,6 +26,8 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository<string>, UserRepository>();
         services.AddScoped<IUserGameRepository, UserGameRepository>();
         services.AddScoped<IGameRepository, GameRepository>();
+        services.AddScoped<IPlatformRepository, PlatformRepository>();
+        services.AddScoped<IUserGameService<UserGame, string>, UserGameService>();
         return services;
     }
 }

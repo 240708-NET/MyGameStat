@@ -1,0 +1,23 @@
+
+# we tell node to use the current node image as base.
+FROM node:alpine AS build
+
+# The /app directory should act as the main application directory
+WORKDIR /app
+
+# Copy the app package and package-lock.json file
+COPY package*.json ./
+
+
+# Install node packages
+RUN npm ci
+COPY . .
+# move the current directory once level higher than the project in the app folder 
+#(a hack to work around the mounting of the source file "I quoted directly from google").
+WORKDIR /app/App
+
+# Expose PORT on container.
+EXPOSE 3000
+
+# Start the app
+ENTRYPOINT ["npm", "run", "dev"] 
