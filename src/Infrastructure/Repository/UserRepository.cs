@@ -7,19 +7,17 @@ namespace MyGameStat.Infrastructure.Repository;
 
 public class UserRepository(ApplicationDbContext ctx) : QueryRepository<User, string>(ctx), IUserRepository<string>
 {
-    public override async Task<User?> GetById(string id)
+    public override User? GetById(string? id)
     {
-        return await dbSet
-                    .Where(u => u.Id == id)
-                    .Include(u => u.UserGames)
-                    .SingleOrDefaultAsync();
+        return dbSet
+                    .Include(e => e.UserGames)
+                    .SingleOrDefault(e => e.Id == id);
     }
 
-    public async Task<User?> GetByUserName(string UserName)
+    public User? GetByUserName(string UserName)
     {
-        return await dbSet
-                    .Where(u => u.UserName == UserName)
-                    .Include(u => u.UserGames)
-                    .SingleOrDefaultAsync();
+        return dbSet
+                    .Include(e => e.UserGames)
+                    .SingleOrDefault(e => e.UserName == UserName);
     }
 }

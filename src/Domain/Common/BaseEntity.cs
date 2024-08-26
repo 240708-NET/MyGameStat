@@ -1,6 +1,6 @@
 namespace MyGameStat.Domain.Common;
 
-public abstract class BaseEntity<I>
+public abstract class BaseEntity<ID>
 {
-        public I? Id {get; set;}
+        public ID? Id {get; set;}
 }

@@ -1,86 +1,56 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MyGameStat.Application.DTO;
 using MyGameStat.Application.Extension;
-using MyGameStat.Application.Repository;
+using MyGameStat.Application.Service;
+using MyGameStat.Domain.Entity;
 
 namespace MyGameStat.Web.API.Controllers;
 
 [ApiController]
-[Route("api/usergames")]
-public class UserGameController(IUserGameRepository repository) : ControllerBase
+[Route("api/user")]
+public class UserGameController(IUserGameService<UserGame, string> userGameService) : ControllerBase
 {
     [Authorize]
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(string id)
+    [HttpGet("games")]
+    public IActionResult GetUserGames()
     {
-        var game = await repository.GetById(id);
-
-        return game is not null ? Ok(game) : NotFound($"Usergame with id {id} not found");
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userGames = userGameService.GetByUserId(userId);
+        var dto = userGames.ToDto();
+        return !userGames.IsNullOrEmpty() ? Ok(dto) : NotFound("No user games found");
     }
 
     [Authorize]
-    [HttpGet]
-    public async Task<IActionResult> GetUserGames([FromQuery(Name="username")] string? userName)
+    [HttpPost("games")]
+    public IActionResult CreateUserGame([FromBody] UserGameDto dto)
     {
-        // Filtering by username
-        if(!string.IsNullOrWhiteSpace(userName))
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userGameId = userGameService.Upsert(userId, dto.ToModel());
+        if(userGameId == null)
         {
-             var games = await repository.GetUserGamesByUsername(userName);
-
-             return !games.IsNullOrEmpty() ? Ok(games) : NotFound($"No games found for user {userName}");
+            return UnprocessableEntity($"userId: {userId}");
         }
-
-        // TODO: Change so that only users with admin role allowed to get all user games.
-        var allGames = await repository.GetAll();
-
-        return !allGames.IsNullOrEmpty() ? Ok(allGames) : NotFound("No games found for the user");
+        return Created();
     }
 
     [Authorize]
-    [HttpPost]
-    public async Task<IActionResult> CreateUserGame([FromBody] UserGameDto dto)
+    [HttpPut("games/{id}")]
+    public IActionResult UpdateUserGame(string id, [FromBody] UserGameDto dto)
     {
-        var userGame = dto.ToModel();
-
-        var userName = User.Identity?.Name;
-        if(string.IsNullOrWhiteSpace(userName))
-        {
-            return UnprocessableEntity();
-        }
-
-        userGame.SetCreateAudits(userName);
-
-        int createCount = await repository.Create(userGame);
-
-        return createCount == 1 ? Created() : UnprocessableEntity();
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        dto.Id = id;
+        userGameService.Update(userId, dto.ToModel());
+        return Ok();
     }
 
     [Authorize]
-    [HttpPut]
-    public async Task<IActionResult> UpdateUserGame([FromBody] UserGameDto dto)
+    [HttpDelete("games/{id}")]
+    public IActionResult DeleteUserGame(string id)
     {
-        var userGame = dto.ToModel();
-
-        var userName = User.Identity?.Name;
-        if(string.IsNullOrWhiteSpace(userName))
-        {
-            return UnprocessableEntity();
-        }
-
-        userGame.SetUpdateAudits(userName);
-
-        int updateCount = await repository.Update(userGame);
-
-        return updateCount == 1 ? Ok(): UnprocessableEntity();
-    }
-
-    [Authorize]
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUserGame(string id)
-    {
-        await repository.Delete(id);
-        return Ok(id);
+        userGameService.Delete(id);
+        return Ok();
     }
 }

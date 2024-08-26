@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -35,7 +34,7 @@ namespace MyGameStat.Web.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -53,7 +52,6 @@ namespace MyGameStat.Web.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
-                    table.UniqueConstraint("AK_User_UserName", x => x.UserName);
                 });
 
             migrationBuilder.CreateTable(
@@ -90,9 +88,9 @@ namespace MyGameStat.Web.API.Migrations
                     Developer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Publisher = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    CreatorId = table.Column<string>(type: "nvarchar(256)", nullable: true),
+                    CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UpdateDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdaterId = table.Column<string>(type: "nvarchar(256)", nullable: true)
+                    UpdaterId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -102,13 +100,13 @@ namespace MyGameStat.Web.API.Migrations
                         column: x => x.CreatorId,
                         principalSchema: "id",
                         principalTable: "User",
-                        principalColumn: "UserName");
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Game_User_UpdaterId",
                         column: x => x.UpdaterId,
                         principalSchema: "id",
                         principalTable: "User",
-                        principalColumn: "UserName");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -119,9 +117,9 @@ namespace MyGameStat.Web.API.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    CreatorId = table.Column<string>(type: "nvarchar(256)", nullable: true),
+                    CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UpdateDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdaterId = table.Column<string>(type: "nvarchar(256)", nullable: true)
+                    UpdaterId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -131,13 +129,13 @@ namespace MyGameStat.Web.API.Migrations
                         column: x => x.CreatorId,
                         principalSchema: "id",
                         principalTable: "User",
-                        principalColumn: "UserName");
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Platform_User_UpdaterId",
                         column: x => x.UpdaterId,
                         principalSchema: "id",
                         principalTable: "User",
-                        principalColumn: "UserName");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -235,17 +233,41 @@ namespace MyGameStat.Web.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GamePlatform",
+                columns: table => new
+                {
+                    GamesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PlatformsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GamePlatform", x => new { x.GamesId, x.PlatformsId });
+                    table.ForeignKey(
+                        name: "FK_GamePlatform_Game_GamesId",
+                        column: x => x.GamesId,
+                        principalTable: "Game",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GamePlatform_Platform_PlatformsId",
+                        column: x => x.PlatformsId,
+                        principalTable: "Platform",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserGame",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    GameId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    GameId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PlatformId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreateDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    CreatorId = table.Column<string>(type: "nvarchar(256)", nullable: true),
+                    CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UpdateDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UpdaterId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UpdaterId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -254,44 +276,25 @@ namespace MyGameStat.Web.API.Migrations
                         name: "FK_UserGame_Game_GameId",
                         column: x => x.GameId,
                         principalTable: "Game",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserGame_Platform_PlatformId",
+                        column: x => x.PlatformId,
+                        principalTable: "Platform",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_UserGame_User_CreatorId",
                         column: x => x.CreatorId,
                         principalSchema: "id",
                         principalTable: "User",
-                        principalColumn: "UserName");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserGame_User_UserId",
-                        column: x => x.UserId,
+                        name: "FK_UserGame_User_UpdaterId",
+                        column: x => x.UpdaterId,
                         principalSchema: "id",
                         principalTable: "User",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GamePlatform",
-                columns: table => new
-                {
-                    GameId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PlatformId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GamePlatform", x => new { x.GameId, x.PlatformId });
-                    table.ForeignKey(
-                        name: "FK_GamePlatform_Game_GameId",
-                        column: x => x.GameId,
-                        principalTable: "Game",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GamePlatform_Platform_PlatformId",
-                        column: x => x.PlatformId,
-                        principalTable: "Platform",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -305,9 +308,9 @@ namespace MyGameStat.Web.API.Migrations
                 column: "UpdaterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GamePlatform_PlatformId",
+                name: "IX_GamePlatform_PlatformsId",
                 table: "GamePlatform",
-                column: "PlatformId");
+                column: "PlatformsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Platform_CreatorId",
@@ -364,9 +367,14 @@ namespace MyGameStat.Web.API.Migrations
                 column: "GameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserGame_UserId",
+                name: "IX_UserGame_PlatformId",
                 table: "UserGame",
-                column: "UserId");
+                column: "PlatformId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserGame_UpdaterId",
+                table: "UserGame",
+                column: "UpdaterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogin_UserId",
@@ -411,10 +419,10 @@ namespace MyGameStat.Web.API.Migrations
                 schema: "id");
 
             migrationBuilder.DropTable(
-                name: "Platform");
+                name: "Game");
 
             migrationBuilder.DropTable(
-                name: "Game");
+                name: "Platform");
 
             migrationBuilder.DropTable(
                 name: "Role",

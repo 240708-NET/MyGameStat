@@ -15,13 +15,13 @@ public class QueryRepository<TEntity, Id> : IQueryRepository<TEntity, Id> where 
         dbSet = ctx.Set<TEntity>();
     }
 
-    public virtual async Task<TEntity?> GetById(Id id)
+    public virtual TEntity? GetById(Id? id)
     {
-        return await ctx.FindAsync<TEntity>(id);
+        return ctx.Find<TEntity>(id);
     }
 
-    public virtual async Task<ICollection<TEntity>> GetAll()
+    public virtual ICollection<TEntity> GetAll()
     {
-        return await dbSet.ToListAsync();
+        return [.. dbSet];
     }
 }

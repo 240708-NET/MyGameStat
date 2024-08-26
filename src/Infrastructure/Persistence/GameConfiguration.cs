@@ -8,26 +8,20 @@ public class GameConfiguration : IEntityTypeConfiguration<Game>
 {
     public void Configure(EntityTypeBuilder<Game> builder)
     {
-        builder.Ignore(g => g.Platforms);
-
         builder
-        .Property(g => g.Id)
+        .Property(e => e.Id)
         .ValueGeneratedOnAdd();
 
         builder
-        .HasMany<Platform>()
-        .WithMany();
+        .HasOne<User>()
+        .WithMany()
+        .HasForeignKey(e => e.CreatorId)
+        .OnDelete(DeleteBehavior.NoAction);
 
         builder
         .HasOne<User>()
         .WithMany()
-        .HasPrincipalKey(u => u.UserName)
-        .HasForeignKey(g => g.CreatorId);
-
-        builder
-        .HasOne<User>()
-        .WithMany()
-        .HasPrincipalKey(u => u.UserName)
-        .HasForeignKey(g => g.UpdaterId);
+        .HasForeignKey(e => e.UpdaterId)
+        .OnDelete(DeleteBehavior.NoAction);
     }
 }

@@ -20,9 +20,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .Entity<IdentityUserLogin<string>>(e => e.ToTable(name: "UserLogin", schema: "id"))
             .Entity<IdentityUserRole<string>>(e => e.ToTable(name: "UserRole", schema: "id"))
             .Entity<IdentityUserToken<string>>(e => e.ToTable(name: "UserToken", schema: "id"))
-            .Entity<IdentityRoleClaim<string>>(e => e.ToTable(name: "RoleClaim", schema: "id"));
-
-       builder
+            .Entity<IdentityRoleClaim<string>>(e => e.ToTable(name: "RoleClaim", schema: "id"))
             .ApplyConfiguration(new UserConfiguration())
             .ApplyConfiguration(new GameConfiguration())
             .ApplyConfiguration(new PlatformConfiguration())

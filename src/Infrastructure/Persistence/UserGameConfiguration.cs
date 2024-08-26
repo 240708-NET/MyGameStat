@@ -8,16 +8,19 @@ public class UserGameConfiguration : IEntityTypeConfiguration<UserGame>
 {
     public void Configure(EntityTypeBuilder<UserGame> builder)
     {
-        builder.Ignore(u => u.Game);
+        builder
+        .Property(e => e.Id)
+        .ValueGeneratedOnAdd();
 
         builder
-        .Property(u => u.Id)
-        .ValueGeneratedOnAdd();
+        .HasOne(e => e.User)
+        .WithMany(e => e.UserGames)
+        .HasForeignKey(e => e.CreatorId);
 
         builder
         .HasOne<User>()
         .WithMany()
-        .HasPrincipalKey(u => u.UserName)
-        .HasForeignKey(g => g.CreatorId);
+        .HasForeignKey(e => e.UpdaterId)
+        .OnDelete(DeleteBehavior.NoAction);
     }
 }

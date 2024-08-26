@@ -9,15 +9,16 @@ public class Repository<TEntity, Id> : QueryRepository<TEntity, Id>, IRepository
 {
     public Repository(ApplicationDbContext ctx) : base(ctx) {}
 
-    public virtual async Task<int> Create(TEntity entity)
+    public virtual Id? Save(TEntity entity)
     {
         dbSet.Add(entity);
-        return await ctx.SaveChangesAsync();
+        ctx.SaveChanges();
+        return entity.Id;
     }
 
-    public virtual async Task Delete(Id id)
+    public virtual void Delete(Id id)
     {
-        var entity = await GetById(id);
+        var entity = GetById(id);
         if (entity is null)
         {
             return;
@@ -29,25 +30,31 @@ public class Repository<TEntity, Id> : QueryRepository<TEntity, Id>, IRepository
         }
 
         dbSet.Remove(entity);
-        await ctx.SaveChangesAsync();
+        ctx.SaveChanges();
     }
 
-    public virtual async Task<int> Update(TEntity _new)
+    public virtual int Update(TEntity update)
     {
-        Id? id = _new.Id;
+        Id? id = update.Id;
         if(id is null)
         {
             return 0;
         }
 
-        var _old = await GetById(id);
-        if(_old is null)
+        var outdate = GetById(id);
+        if(outdate is null)
         {
             return 0;
         }
         
-        ctx.Entry(_old).CurrentValues.SetValues(_new);
-        //context.Entry(entity).State = EntityState.Modified;
-        return await ctx.SaveChangesAsync();
+        ctx.Entry(outdate).CurrentValues.SetValues(update);
+        ctx.Entry(outdate).State = EntityState.Modified;
+        return ctx.SaveChanges();
+    }
+
+    public virtual TEntity? Retrieve(TEntity entity)
+    {
+        // TODO: Does Find() handle a null argument?
+        return dbSet.Find(entity.Id);
     }
 }
