@@ -15,10 +15,14 @@ public class UserGameController(IUserGameService<UserGame, string> userGameServi
 {
     [Authorize]
     [HttpGet("games")]
-    public IActionResult GetUserGames([FromQuery(Name="status")] Status? status)
+    public IActionResult GetUserGames(
+        [FromQuery(Name="status")] Status? status,
+        [FromQuery(Name="genre")] string? genre,
+        [FromQuery(Name="platformName")] string? platformName
+        )
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var userGames = userGameService.GetByUserIdAndStatus(userId, status);
+        var userGames = userGameService.GetByUserIdAndFilter(userId, status, genre, platformName);
         var dto = userGames.ToDto();
         return !userGames.IsNullOrEmpty() ? Ok(dto) : NotFound("No user games found");
     }

@@ -12,7 +12,7 @@ using MyGameStat.Infrastructure.Persistence;
 namespace MyGameStat.Web.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240826023017_Initial")]
+    [Migration("20240826195951_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

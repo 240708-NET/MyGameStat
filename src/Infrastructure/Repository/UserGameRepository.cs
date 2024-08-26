@@ -26,11 +26,13 @@ public class UserGameRepository(ApplicationDbContext ctx) : Repository<UserGame,
                     e.Platform.Id != null && e.Platform.Id.Equals(userGame.Platform.Id));
     }
 
-    public ICollection<UserGame> GetByUserIdAndStatus(string? id, Status? status)
+    public ICollection<UserGame> GetByUserIdAndFilter(string? id, Status? status, string? genre, string? platformName)
     {
         return [.. dbSet
                     .Where(e => id != null && id.Equals(e.CreatorId))
                     .Where(e => status == null || status == e.Status)
+                    .Where(e => genre == null || genre.Equals(e.Game.Genre))
+                    .Where(e => platformName == null || platformName.Equals(e.Platform.Name))
                     .Include(e => e.Game)
                     .Include(e => e.Platform)
                     .Include(e => e.User)];
