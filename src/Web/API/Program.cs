@@ -32,7 +32,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddAuthorization();
-
+//credential check
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -43,6 +43,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: allowUI,
                       policy  =>  
                       {  
+                        //we must allow communication from any origin (.SetIsOriginAllowed (hostname => true)  checks origins individually and checks credential )
                           policy.WithOrigins("http://localhost:3000" )
                           .AllowCredentials()
                           .AllowAnyMethod()
