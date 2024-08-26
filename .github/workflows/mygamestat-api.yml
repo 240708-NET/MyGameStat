@@ -37,5 +37,42 @@ jobs:
       #start building .net project
     - name: Dotnet Build
       run: dotnet build ./src/Web/API/ --no-restore
+
+       #containerize
+       dockerize:
+        needs: build
+        runs-on: ubuntu-latest
+    
+        steps:
+        # Specify the source code
+        - name: Checkout Source
+          uses: actions/checkout@v4
+    
+          #Install docker
+        - name: Install Docker
+          uses: docker/setup-buildx-action@v2
+        
+          # login to our docker account
+        - name: Login to dockerhub
+          uses: docker/login-action@v2
+          with:
+            registry: https://index.docker.io/v1/
+            # We use the github repository secret to store user name password
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
+    
+        # push to our docker repo
+        - name: Build and Push to dockerhub
+          uses: docker/build-push-action@v5
+          with:
+            # specify the location of the docker file
+            context: ./src/Web/API/
+            push: true
+    
+      deploy:
+        # Specify which job needs to be finished first
+        needs: dockerize
+        runs-on: ubuntu-latest
+    
     
     
