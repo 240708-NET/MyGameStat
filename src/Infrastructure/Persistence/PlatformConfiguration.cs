@@ -8,8 +8,6 @@ public class PlatformConfiguration : IEntityTypeConfiguration<Platform>
 {
     public void Configure(EntityTypeBuilder<Platform> builder)
     {
-        builder.Ignore(p => p.Games);
-
         builder
         .Property(p => p.Id)
         .ValueGeneratedOnAdd();
@@ -17,13 +15,13 @@ public class PlatformConfiguration : IEntityTypeConfiguration<Platform>
         builder
         .HasOne<User>()
         .WithMany()
-        .HasPrincipalKey(u => u.UserName)
-        .HasForeignKey(g => g.CreatorId);
+        .HasForeignKey(e => e.CreatorId)
+        .OnDelete(DeleteBehavior.NoAction);
 
         builder
         .HasOne<User>()
         .WithMany()
-        .HasPrincipalKey(u => u.UserName)
-        .HasForeignKey(g => g.UpdaterId);
+        .HasForeignKey(e => e.UpdaterId)
+        .OnDelete(DeleteBehavior.NoAction);
     }
 }

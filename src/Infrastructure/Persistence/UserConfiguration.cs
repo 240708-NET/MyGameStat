@@ -8,12 +8,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder
-        .HasMany<Game>()
-        .WithMany()
-        .UsingEntity<UserGame>(
-            l => l.HasOne<Game>().WithMany().HasForeignKey(g => g.GameId),
-            r => r.HasOne<User>().WithMany().HasPrincipalKey(u => u.UserName).HasForeignKey(ug => ug.CreatorId)
-        );
+        builder.Ignore(e => e.UserGames);
     }
 }

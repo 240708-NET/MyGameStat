@@ -7,19 +7,25 @@ namespace MyGameStat.Infrastructure.Repository;
 
 public class GameRepository(ApplicationDbContext ctx) : Repository<Game, string>(ctx), IGameRepository
 {
-    public override async Task<Game?> GetById(string id)
+    public override Game? GetById(string? id)
     {
-        return await dbSet
-                    .Where(g => g.Id == id)
-                    .Include(g => g.Platforms)
-                    .SingleOrDefaultAsync();
+        return dbSet.SingleOrDefault(e => e.Id == id);
     }
 
-    public async Task<ICollection<Game>> GetGamesByTitle(string title)
+    public ICollection<Game> GetByTitle(string title)
     {
-        return await dbSet
-                    .Where(g => title.Equals(g.Title))
-                    .Include(g => g.Platforms)
-                    .ToListAsync();
+        return [.. dbSet.Where(e => title.Equals(e.Title))];
+    }
+
+    public override Game? Retrieve(Game game)
+    {
+        return dbSet
+               .Include(e => e.Platforms)
+               .SingleOrDefault(g =>
+                    g.Title.Equals(game.Title) &&
+                    g.Genre.Equals(game.Genre) &&
+                    g.ReleaseDate.Equals(game.ReleaseDate) &&
+                    g.Developer.Equals(game.Developer) &&
+                    g.Publisher.Equals(game.Publisher));
     }
 }

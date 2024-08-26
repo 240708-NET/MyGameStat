@@ -4,6 +4,5 @@ namespace MyGameStat.Domain.Entity;
 
 public class User : IdentityUser
 {
-    // Navigation properties
-    public ICollection<UserGame> UserGames { get; } = [];
+    public List<UserGame> UserGames { get; } = [];
 }
