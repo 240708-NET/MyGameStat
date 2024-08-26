@@ -58,9 +58,9 @@ public class UserGameService : IUserGameService<UserGame, string>
         userGameRepository.Delete(id);
     }
 
-    public ICollection<UserGame> GetByUserId(string? userId)
+    public ICollection<UserGame> GetByUserIdAndStatus(string? userId, Status? status)
     {
-        return userGameRepository.GetByUserId(userId);
+        return userGameRepository.GetByUserIdAndStatus(userId, status);
     }
 
     public int Update(string? userId, UserGame upToDate)
