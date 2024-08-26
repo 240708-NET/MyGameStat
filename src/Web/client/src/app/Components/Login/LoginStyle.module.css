@@ -9,6 +9,7 @@
 
     background-color: var(--background-secondary);
     color: var(--text-color);
+    z-index: 1000;
 }
 
 /* Inactive button for the portal */
@@ -32,6 +33,7 @@
     border-radius: 10px;
 
     padding: 10px;
+    z-index: 1001;
 }
 
 .loginPortal::after {
