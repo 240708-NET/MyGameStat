@@ -36,6 +36,6 @@ jobs:
 
       #start building .net project
     - name: Dotnet Build
-      run: dotnet build ./src/Web/API/ --no-restore ./
+      run: dotnet build ./src/Web/API/ --no-restore
     
     
