@@ -1,5 +1,4 @@
 name: API Build and Deploy
-
 #triggers
 on:
   push:
@@ -73,6 +72,11 @@ jobs:
     # Specify which job needs to be finished first
     needs: dockerize
     runs-on: ubuntu-latest
+
+    steps:
+      # Check the system
+      - name: deploy-sanity-check
+        run: echo "Keep deploying"
     
     
     
