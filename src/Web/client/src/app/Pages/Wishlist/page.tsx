@@ -11,7 +11,7 @@ const WishlistPage: React.FC = () => {
 
     useEffect(() => {
         const fetchWishlist = async () => {
-            const API_KEY = '020647103efa4c01ab3418ae762fd875'; 
+            const API_KEY = ''; 
             try {
                 const response = await axios.get('https://api.rawg.io/api/games', {
                     params: {

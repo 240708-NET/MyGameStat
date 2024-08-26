@@ -15,10 +15,14 @@
 .Title {
   color: #fff;
   position: absolute;
-  top: 15%; 
+  top: 15%;
   left: 0;
   right: 0;
-  text-align: center; 
+  text-align: center;
+  margin: auto; 
+  max-width: 100%; 
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .Title h1 {
