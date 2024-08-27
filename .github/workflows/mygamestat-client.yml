@@ -5,11 +5,11 @@ defaults:
     working-directory: src/Web/client
 #Triggers
 on:
-  push:
+  push:  #triggerd with push request
     branches: [main]
     paths: [src/Web/client/**]
 
-  pull_request:
+  pull_request:  #triggerd with pull request
     branches: [main]
     paths: [src/Web/client/**]
 
