@@ -65,12 +65,13 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build docker image
-      run: docker build ./https://hub.docker.com/repositories/shumna -t shumna/mygamestat-backend:${{ github.sha }} 
-      
-    - name: Push docker image
-      run: docker push shumna/mygamestat-backend:${{ github.sha }}
-      
+    - name: Build and Push to dockerhub
+      uses: docker/build-push-action@v5
+      with:
+        context: ./src/web/API/
+        push: true
+        tags: mygamestat-:${{ github.sha }}
+    
         
         
   deploy:
