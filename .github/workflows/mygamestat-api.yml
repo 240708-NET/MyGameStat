@@ -67,20 +67,14 @@ jobs:
       
     - name: Build dockerhub
       run: |
-        docker build ./api/ -t shumna/mygamestat-backend:latest
-        docker build ./api/ -t shumna/mygamestat-backend:latest
-        docker push shumna/mygamestat-backend:latest
-
-    # push to our docker repo
-    
-
-
-      #with:
-            # specify the location of the docker file
-        #context: ./src/Web/API/
-        #push: true
-        #tags: mygamestat-backend:{{ github.sha }} 
-    
+          docker build ./api/ -t shumna/mygamestat-backend
+          docker build ./api/ -t shumna/mygamestat-backend
+          docker push shumna/mygamestat-backend
+        with:
+          context: ./src/Web/API/
+          push: true
+          tags: mygamestat-backend:{{ github.sha }}
+      
   deploy:
     # Specify which job needs to be finished first
     needs: dockerize
