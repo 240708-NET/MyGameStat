@@ -50,7 +50,7 @@ jobs:
         with:
           app-name: 'patienttracker-api'
           slot-name: 'production'
-          publish-profile: ${{ secrets.AZUREPUBLISH_SECRET_KEY }}
+          publish-profile: ${{ secrets.AZUREPUBLISH_SECRET_KEY }} #checks azure publish
           images: 'index.docker.io/mygamestat-backend:${{ github.sha }}'
       
     
