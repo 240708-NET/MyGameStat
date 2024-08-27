@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Collection.module.css';
 
 interface Game {
-    id?: number; // Assuming the game has an optional ID field
+    id?: number; 
     title: string;
     status: string;
     genre: string;
