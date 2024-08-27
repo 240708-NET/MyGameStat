@@ -66,7 +66,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build docker image
-      run: docker build ./src/Web/API/ -t shumna/mygamestat-backend:${{ github.sha }} .
+      run: docker build https://hub.docker.com/repositories/shumna -t shumna/mygamestat-backend:${{ github.sha }} .
       
     - name: Push docker image
       run: docker push shumna/mygamestat-backend:${{ github.sha }}
