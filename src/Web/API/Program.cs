@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using MyGameStat.Domain.Entity;
@@ -73,3 +74,6 @@ app.MapControllers();
 app.UseCors(allowUI);
 
 app.Run();
+
+[ExcludeFromCodeCoverageAttribute]
+public partial class Program {}

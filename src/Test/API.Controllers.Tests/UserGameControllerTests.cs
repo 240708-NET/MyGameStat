@@ -4,10 +4,8 @@ using MyGameStat.Domain.Entity;
 using MyGameStat.Web.API.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using MyGameStat.Application.DTO;
 using MyGameStat.Application.Extension;
 using Microsoft.AspNetCore.Http;
-using System.Diagnostics;
 using System.Security.Claims;
 using MyGameStat.Application.Service;
 
