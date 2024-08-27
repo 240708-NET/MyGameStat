@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import WishlistSlider from '../../Components/WishlistSlider/WishlistSlider';
+import WishlistSlider from '../../Components/WishListSlider/WishlistSlider';
 import styles from './Wishlist.module.css'; 
 
 const WishlistPage: React.FC = () => {

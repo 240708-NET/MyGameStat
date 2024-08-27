@@ -246,7 +246,7 @@ useEffect(() => {
 
                         <br />
                         <div className={`${styles.portalCreate}`}>
-                            <p>Don't have an account?</p>
+                        <p>Don&apos;t have an account?</p>
                             <button onClick={toggleCreate}>Create an account</button>
                         </div>
                     </div>
