@@ -67,8 +67,7 @@ jobs:
       
     - name: Build dockerhub
       run: |
-        docker build ./ -t shumna/mygamestat-backend
-        docker build ./ -t shumna/mygamestat-backend
+        docker build ./api/ -t shumna/mygamestat-backend
         docker push shumna/mygamestat-backend  
         with:
         context: ./src/Web/API/
