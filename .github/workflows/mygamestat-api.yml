@@ -55,24 +55,31 @@ jobs:
           #Install docker
     - name: Install Docker
       uses: docker/setup-buildx-action@v2
-        
+  
           # login to our docker account
-    - name: Login to dockerhub
+    - name: Login to dockerhub and push
       uses: docker/login-action@v2
       with:
         registry: https://index.docker.io/v1/
             # We use the github repository secret to store user name password
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+      
+    - name: Build dockerhub
+      run: |
+        docker build .src/web/API/ -t shumna/mygamestat-backend:latest
+        docker build ./api/ -t shumna/mygamestat-backend:latest
+        docker push shumna/mygamestat-backend:latest
+
+    # push to our docker repo
     
-        # push to our docker repo
-    - name: Build and Push to dockerhub
-      uses: docker/build-push-action@v5
-      with:
+
+
+      #with:
             # specify the location of the docker file
-        context: ./src/Web/API/
-        push: true
-        tags: mygamestat-backend:${{ github.sha }} 
+        #context: ./src/Web/API/
+        #push: true
+        #tags: mygamestat-backend:{{ github.sha }} 
     
   deploy:
     # Specify which job needs to be finished first
