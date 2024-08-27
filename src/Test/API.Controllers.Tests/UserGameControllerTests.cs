@@ -48,7 +48,7 @@ namespace Test.API.Controllers.Tests {
                 Manufacturer = "PC"
             };
 
-            _service.Setup(service => service.GetByUserId("1")).Returns(new List<UserGame>() {
+            _service.Setup(service => service.GetByUserIdAndFilter("1", Status.Owned, "Arcade", "PC")).Returns(new List<UserGame>() {
                 new UserGame() { CreatorId = "1", Game = game1, Platform = platform, Status = Status.Owned }
             });
 
@@ -66,8 +66,8 @@ namespace Test.API.Controllers.Tests {
             };
             
             //  Act
-            var okResult = _controller.GetUserGames() as OkObjectResult;
-            _service.Verify(service => service.GetByUserId("1"), Times.Once);
+            var okResult = _controller.GetUserGames(Status.Owned, "Arcade", "PC") as OkObjectResult;
+            _service.Verify(service => service.GetByUserIdAndFilter("1", Status.Owned, "Arcade", "PC"), Times.Once);
 
             //  Assert
             Assert.NotNull(okResult);
@@ -91,7 +91,7 @@ namespace Test.API.Controllers.Tests {
                 Manufacturer = "PC"
             };
 
-            _service.Setup(service => service.GetByUserId("1")).Returns(new List<UserGame>() {
+            _service.Setup(service => service.GetByUserIdAndFilter("1", Status.Owned, "Arcade", "PC")).Returns(new List<UserGame>() {
                 
             });
 
@@ -109,8 +109,8 @@ namespace Test.API.Controllers.Tests {
             };
             
             //  Act
-            var badResult = _controller.GetUserGames() as NotFoundObjectResult;
-            _service.Verify(service => service.GetByUserId("1"), Times.Once);
+            var badResult = _controller.GetUserGames(Status.Owned, "Arcade", "PC") as NotFoundObjectResult;
+            _service.Verify(service => service.GetByUserIdAndFilter("1", Status.Owned, "Arcade", "PC"), Times.Once);
 
             //  Assert
             Assert.NotNull(badResult);
@@ -341,7 +341,7 @@ namespace Test.API.Controllers.Tests {
                 Status = Status.Owned,
             };
 
-            _service.Setup(service => service.GetByUserId("1")).Returns(new List<UserGame>() {
+            _service.Setup(service => service.GetByUserIdAndFilter("1", Status.Owned, "Arcade", "PC")).Returns(new List<UserGame>() {
                 userGame
             });
             _service.Setup(service => service.Upsert("1", It.IsAny<UserGame>())).Returns("1");
@@ -369,8 +369,8 @@ namespace Test.API.Controllers.Tests {
             Assert.NotNull(okResult1);
             
             //  Get Act
-            var okResult2 = _controller.GetUserGames() as OkObjectResult;
-            _service.Verify(service => service.GetByUserId("1"), Times.Once);
+            var okResult2 = _controller.GetUserGames(Status.Owned, "Arcade", "PC") as OkObjectResult;
+            _service.Verify(service => service.GetByUserIdAndFilter("1", Status.Owned, "Arcade", "PC"), Times.Once);
 
             Assert.NotNull(okResult2);
             Assert.Equal((int)HttpStatusCode.OK, okResult2.StatusCode);
