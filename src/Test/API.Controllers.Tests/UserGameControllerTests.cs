@@ -318,7 +318,7 @@ namespace Test.API.Controllers.Tests {
         */
 
         [Fact]
-        public async Task DeleteGame_Valid() {
+        public void DeleteGame_Valid() {
             //  Arrange
             Game game = new Game() {
                 CreatorId = "1",
