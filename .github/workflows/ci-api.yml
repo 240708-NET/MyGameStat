@@ -1,0 +1,35 @@
+name: Build and Deploy API
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: [src/Web/client/**]
+  pull_request:    
+    branches: [main]
+    paths-ignore: [src/Web/client/**]
+
+  workflow_dispatch:
+
+jobs:
+  build-api:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies and tools
+      run: dotnet restore
+    - name: Build project
+      run: dotnet build
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
+    - name: Build & push Docker image
+      uses: mr-smithers-excellent/docker-build-push@v6
+      with:
+        image: ${{ vars.DOCKER_HUB_REPO }}/${{ vars.API_IMAGE_NAME }}
+        tags: ${{ github.sha }}
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: src/Web/API/Dockerfile
