@@ -2,10 +2,10 @@ name: Build and Deploy API
 
 on:
   push:
-    branches: [workflow]
+    branches: [main]
     paths-ignore: [src/Web/client/**]
   pull_request:    
-    branches: [workflow]
+    branches: [main]
     paths-ignore: [src/Web/client/**]
 
   workflow_dispatch:
