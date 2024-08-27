@@ -1,9 +1,33 @@
 .Container {
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full viewport height */
-    text-align: center; /* Center text inside the div */
-    padding: 0 20px; /* Optional: Add some padding for better mobile view */
-  }
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  padding-left: 150px;
+  padding-right: 150px;
+  padding-bottom: 50px;
+  height: 100vh;
+  text-align: center;
+  position: relative;
+}
+
+.Title {
+  color: #fff;
+  position: absolute;
+  top: 15%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  margin: auto; 
+  max-width: 100%; 
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.Title h1 {
+  font-size: 44px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+}

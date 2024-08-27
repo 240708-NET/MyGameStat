@@ -58,9 +58,9 @@ public class UserGameService : IUserGameService<UserGame, string>
         userGameRepository.Delete(id);
     }
 
-    public ICollection<UserGame> GetByUserId(string? userId)
+    public ICollection<UserGame> GetByUserIdAndFilter(string? userId, Status? status, string? genre, string? platformName)
     {
-        return userGameRepository.GetByUserId(userId);
+        return userGameRepository.GetByUserIdAndFilter(userId, status, genre, platformName);
     }
 
     public int Update(string? userId, UserGame upToDate)

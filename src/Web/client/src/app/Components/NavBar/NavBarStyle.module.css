@@ -9,6 +9,7 @@
     flex-direction: column;
     transition: background-color 0.5s ease, transform 0.3s ease, width 0.3s ease; /* Smooth transition for background color */
     overflow: hidden;
+    z-index: 1000;
   }
 
   /* When the menu is open (expanded state) */
@@ -43,6 +44,7 @@
     position: absolute;
     top: 20px;
     right: 20px;
+    z-index: 1100;
   }
   
   /* Hamburger icon style */
@@ -58,6 +60,7 @@
     display: flex;
     flex-direction: column;
     width: 250px;
+    z-index: 1050;
   }
   
   /* Style for each menu item */
