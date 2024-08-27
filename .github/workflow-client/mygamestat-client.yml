@@ -37,6 +37,7 @@ jobs:
         directory: src/Web/client
         dockerfile: src/Web/client/Dockerfile
 
+  #deploy to azure
   deploy:
 
     runs-on: ubuntu-latest
