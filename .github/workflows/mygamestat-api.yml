@@ -64,16 +64,13 @@ jobs:
             # We use the github repository secret to store user name password
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-      
 
     - name: Build docker image
-      run: |
-        docker build -t shumna/mygamestat-backend:latest .
+      run: docker build -t shumna/mygamestat-backend:${{ github.sha }} .
+      
     - name: Push docker image
-      run: docker push shumna/mygamestat-backend:latest
-       # with:
-       # context: ./src/Web/API/
-       # push: true
+      run: docker push shumna/mygamestat-backend:${{ github.sha }}
+      
         
         
   deploy:
