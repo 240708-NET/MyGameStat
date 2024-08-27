@@ -11,8 +11,8 @@ interface Game {
     releaseDate: string;
     developer: string;
     publisher: string;
-    platform: string;
-    manufacturer: string;
+    platformName: string;
+    platformManufacturer: string;
 }
 
 const CollectionPage: React.FC = () => {
@@ -24,28 +24,27 @@ const CollectionPage: React.FC = () => {
         releaseDate: '',
         developer: '',
         publisher: '',
-        platform: 'Console',
-        manufacturer: ''
+        platformName: 'Console',
+        platformManufacturer: ''
     });
     const [editIndex, setEditIndex] = useState<number | null>(null);
 
     // Fetch all games
-    useEffect(() => {
-        const fetchGames = async () => {
+    const fetchGames = async () => {
+        const token = sessionStorage.getItem('token');
+        const tokenType = sessionStorage.getItem('tokenType') || 'Bearer';
 
-            const token = sessionStorage.getItem('token');
-            const tokenType = sessionStorage.getItem('tokenType') || 'Bearer';
+        if (!token) {
+            sessionStorage.clear();
+            console.error('No token found');
+            return;
+        }
 
-            if (!token) {
-                sessionStorage.clear();
-                console.error('No token found');
-                return;
-            }
-
+        try {
             const response = await fetch(`https://localhost:7094/api/user/games`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `${tokenType} ${token}`, 
+                    'Authorization': `${tokenType} ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
@@ -54,26 +53,29 @@ const CollectionPage: React.FC = () => {
                 const data = await response.json();
                 setGames(data);
             } else {
-                sessionStorage.clear(); 
+                sessionStorage.clear();
                 console.error('Failed to fetch games');
             }
-        };
+        } catch (error) {
+            console.error('An error occurred while fetching games:', error);
+        }
+    };
 
+    useEffect(() => {
         fetchGames();
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-    
+
         const token = sessionStorage.getItem('token');
         const tokenType = sessionStorage.getItem('tokenType') || 'Bearer';
-    
+
         if (!token) {
             console.error('No token found');
             return;
         }
-    
-        // Map your form fields to match what the backend expects
+
         const gameData = { 
             title: newGame.title,
             status: newGame.status,
@@ -81,17 +83,17 @@ const CollectionPage: React.FC = () => {
             releaseDate: newGame.releaseDate,
             developer: newGame.developer,
             publisher: newGame.publisher,
-            platformName: newGame.platform,  
-            platformManufacturer: newGame.manufacturer,  
+            platformName: newGame.platformName,
+            platformManufacturer: newGame.platformManufacturer,
         };
-    
+
         try {
             let response;
-    
-            if (editIndex !== null) {
-                // PUT request for updating an existing game
-                console.log('Attempting to update game with data:', gameData);
-                response = await fetch(`https://localhost:7094/api/user/games`, {
+
+            if (editIndex !== null && games[editIndex]?.id) {
+                const gameId = games[editIndex].id;
+                console.log('Attempting to update game with ID:', gameId);
+                response = await fetch(`https://localhost:7094/api/user/games/${gameId}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `${tokenType} ${token}`,
@@ -100,7 +102,6 @@ const CollectionPage: React.FC = () => {
                     body: JSON.stringify(gameData)
                 });
             } else {
-                // POST request for adding a new game
                 console.log('Attempting to add new game with data:', gameData);
                 response = await fetch(`https://localhost:7094/api/user/games`, {
                     method: 'POST',
@@ -111,26 +112,12 @@ const CollectionPage: React.FC = () => {
                     body: JSON.stringify(gameData)
                 });
             }
-    
+
             console.log('Response status:', response.status);
-    
-            if (response.status === 204) {
-                console.log('Game successfully added/updated with no content returned.');
-                window.location.reload();
-            } else if (response.ok) {
-                const addedOrUpdatedGame = await response.json();
-                console.log('Game successfully added/updated:', addedOrUpdatedGame);
-                window.location.reload();
-                if (editIndex !== null) {
-                    const updatedGames = [...games];
-                    updatedGames[editIndex] = addedOrUpdatedGame;
-                    setGames(updatedGames);
-                    setEditIndex(null);
-                } else {
-                    setGames([...games, addedOrUpdatedGame]);
-                }
-    
-                // Reset the form
+
+            if (response.ok) {
+                // Fetch the updated collection after successful add/update
+                await fetchGames();
                 setNewGame({
                     title: '',
                     status: 'Owned',
@@ -138,9 +125,10 @@ const CollectionPage: React.FC = () => {
                     releaseDate: '',
                     developer: '',
                     publisher: '',
-                    platform: '',  // Reset platform to an empty value
-                    manufacturer: ''  // Reset manufacturer to an empty value
+                    platformName: '',
+                    platformManufacturer: ''
                 });
+                setEditIndex(null);
             } else {
                 const errorText = await response.text();
                 console.error('Failed to add/update game. Server responded with:', errorText);
@@ -149,8 +137,6 @@ const CollectionPage: React.FC = () => {
             console.error('An error occurred while adding/updating the game:', error);
         }
     };
-    
-    
 
     // Handle deleting a game
     const handleDelete = async (index: number) => {
@@ -188,7 +174,6 @@ const CollectionPage: React.FC = () => {
             console.error('An error occurred while deleting the game:', error);
         }
     };
-    
 
     // Handle editing a game
     const handleEdit = (index: number) => {
@@ -218,8 +203,8 @@ const CollectionPage: React.FC = () => {
                     />
                     <label htmlFor="status">Status:</label>
                     <select name="status" value={newGame.status} onChange={handleInputChange}>
-                        {/* <option value="Owned">Owned</option> */}
-                        {/* <option value="Wishlist">Wishlist</option> */}
+                        <option value="Owned">Owned</option>
+                        <option value="Wishlist">Wishlist</option>
                         <option value="Playing">Playing</option>
                         <option value="Completed">Completed</option>
                     </select>
@@ -259,17 +244,17 @@ const CollectionPage: React.FC = () => {
                         required
                     />
                     <label htmlFor="platform">Platform:</label>
-                    <select name="platform" value={newGame.platform} onChange={handleInputChange}>
+                    <select name="platformName" value={newGame.platformName} onChange={handleInputChange}>
                         <option value="Console">Console</option>
                         <option value="PC">PC</option>
                         <option value="Mobile">Mobile</option>
                     </select>
-                    <label htmlFor="manufacturer">Manufacturer:</label>
+                    <label htmlFor="platformManufacturer">Manufacturer:</label>
                     <input
                         type="text"
-                        name="manufacturer"
+                        name="platformManufacturer"
                         placeholder="Manufacturer"
-                        value={newGame.manufacturer}
+                        value={newGame.platformManufacturer}
                         onChange={handleInputChange}
                         required
                     />
@@ -289,9 +274,9 @@ const CollectionPage: React.FC = () => {
                             <p>Release Date: {game.releaseDate}</p>
                             <p>Developer: {game.developer}</p>
                             <p>Publisher: {game.publisher}</p>
-                            <p>Platform: {game.platform}</p>
-                            <p>Manufacturer: {game.manufacturer}</p>
-                            <div className={styles.cardButtons}>
+                            <p>Platform: {game.platformName}</p>
+                            <p>Manufacturer: {game.platformManufacturer}</p>
+                            <div className={styles.buttonGroup}>
                                 <button onClick={() => handleEdit(index)} className={styles.editButton}>
                                     Edit
                                 </button>
@@ -306,4 +291,5 @@ const CollectionPage: React.FC = () => {
         </main>
     );
 };
+
 export default CollectionPage;
