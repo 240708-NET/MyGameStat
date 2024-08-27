@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace MyGameStat.Web.API.Migrations
 {
+    [ExcludeFromCodeCoverageAttribute]
     /// <inheritdoc />
     public partial class Initial : Migration
     {

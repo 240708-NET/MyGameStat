@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using MyGameStat.Infrastructure.Persistence;
 
 namespace MyGameStat.Web.API.Extension;
 
+[ExcludeFromCodeCoverageAttribute]
 public static class MigrationExtensions
 {
     public static void ApplyMigrations(this IApplicationBuilder app)
