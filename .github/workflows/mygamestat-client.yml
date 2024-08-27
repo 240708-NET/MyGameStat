@@ -1,0 +1,57 @@
+name: Build and Deploy Client
+
+defaults:
+  run:
+    working-directory: src/Web/client
+#Triggers
+on:
+  push:
+    branches: [workflow]
+    paths: [src/Web/client/**]
+
+  pull_request:
+    branches: [workflow]
+    paths: [src/Web/client/**]
+
+  workflow_dispatch:
+
+jobs:
+  build-client:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+    - name: Install dependencies
+      run: npm install
+    - name: Build project
+      run: npm run build
+    - name: Run tests
+      run: echo "no tests to run"
+    - name: Build & push Docker image
+      uses: mr-smithers-excellent/docker-build-push@v6
+      with:
+        image: ${{ vars.DOCKER_HUB_REPO }}/${{ vars.CLIENT_IMAGE_NAME }}
+        tags: mygamestat-frontend${{ github.sha }}
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        directory: src/Web/client
+        dockerfile: src/Web/client/Dockerfile
+
+  #deploy to azure
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check the system
+      - name: deploy-sanity-check
+        run: echo "Keep deploying"
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'mygamestat-frontend'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_FRONTEND }} #checks azure publish
+          images: 'index.docker.io/ommarico2/mygamestat-frontend-dev:v1${{ github.sha }}'
