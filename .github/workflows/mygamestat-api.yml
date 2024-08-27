@@ -36,6 +36,7 @@ jobs:
       #start building .net project
     - name: Dotnet Build
       run: dotnet build ./src/Web/API/ --no-restore
+      
 
        #containerize
   dockerize:
@@ -67,6 +68,7 @@ jobs:
             # specify the location of the docker file
         context: ./src/Web/API/
         push: true
+        tags: mygamestat-backend:${{ github.sha }} 
     
   deploy:
     # Specify which job needs to be finished first
