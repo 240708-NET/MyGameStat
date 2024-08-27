@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths-ignore: [src/Web/client/**]
   pull_request:    
-    branches: [main]
+    branches: [main] #triggerd with pull request
     paths-ignore: [src/Web/client/**]
 
   workflow_dispatch:

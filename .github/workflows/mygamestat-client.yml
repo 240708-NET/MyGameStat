@@ -6,11 +6,11 @@ defaults:
 #Triggers
 on:
   push:
-    branches: [workflow]
+    branches: [main]
     paths: [src/Web/client/**]
 
   pull_request:
-    branches: [workflow]
+    branches: [main]
     paths: [src/Web/client/**]
 
   workflow_dispatch:
