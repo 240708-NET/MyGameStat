@@ -36,4 +36,4 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         #TODO: Change to prod Dockerfile
-        dockerfile: src/web/client/Dockerfile-run-dev
+        dockerfile: src/Web/client/Dockerfile-run-dev
