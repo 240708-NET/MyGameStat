@@ -1,52 +1,48 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
-import { PieChart, Pie, Legend, Cell } from "recharts";
+import { PieChart, Pie, Legend, Cell } from 'recharts';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4561', '#66CCFF'];
 
-const CustomPieChart: React.FC = () => {
+interface CustomPieChartProps {
+    data: { [key: string]: number };
+}
+
+const CustomPieChart: React.FC<CustomPieChartProps> = ({ data }) => {
     const [chartData, setChartData] = useState<any[]>([]);
 
     useEffect(() => {
-        const loggedInUser = localStorage.getItem('loggedInUser');
-        const savedGames = JSON.parse(localStorage.getItem('userGames') || '[]');
-
-        // Filter games to show only those belonging to the logged-in user
-        const userGames = savedGames.filter((game: any) => game.user === loggedInUser);
-
-        // Calculate the distribution of games by genre (or any other property)
-        const genreCounts = userGames.reduce((acc: any, game: any) => {
-            acc[game.genre] = (acc[game.genre] || 0) + 1;
-            return acc;
-        }, {});
-
         // Prepare data for the PieChart
-        const data = Object.keys(genreCounts).map((genre, index) => ({
-            name: genre,
-            value: genreCounts[genre],
-            color: COLORS[index % COLORS.length]  // Assign a color from the COLORS array
+        const formattedData = Object.keys(data).map((platform, index) => ({
+            name: platform,
+            value: data[platform],
+            color: COLORS[index % COLORS.length],
         }));
 
-        setChartData(data);
-    }, []);
+        setChartData(formattedData);
+    }, [data]); // Re-run this effect whenever the `data` prop changes
 
     return (
-        <PieChart width={730} height={250}>
-            <Pie 
-                data={chartData} 
-                dataKey="value" 
-                nameKey="name" 
-                cx="50%" 
-                cy="50%" 
-                innerRadius={60} 
-                outerRadius={80} 
+        <PieChart
+            width={310}  // Adjust to the full width of the container
+            height={310}  // Adjust height to fit better with the container
+        >
+            <Pie
+                data={chartData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius="40%"  // Adjust inner and outer radius for better sizing
+                outerRadius="60%"
                 label
             >
                 {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
             </Pie>
-            <Legend/>
+            <Legend />
         </PieChart>
     );
 };
