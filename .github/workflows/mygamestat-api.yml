@@ -65,13 +65,16 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
       
-    - name: Build dockerhub
+
+    - name: Build docker image
       run: |
-        docker build . -t mygamestat-backend
-        with:
-        context: ./src/Web/API/
-        push: true
-        tags: mygamestat-backend:{{ github.sha }}
+        docker build -t shumna/mygamestat-backend:latest .
+    - name: Push docker image
+      run: docker push shumna/mygamestat-backend:latest
+       # with:
+       # context: ./src/Web/API/
+       # push: true
+        
         
   deploy:
     # Specify which job needs to be finished first
