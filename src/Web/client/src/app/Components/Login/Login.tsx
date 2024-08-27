@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styles from './LoginStyle.module.css';
 
@@ -16,6 +16,19 @@ export default function Login() {
     const[status, setStatus] = useState("inactive");
     const[loggedIn, setLoggedIn] = useState(false);
     const[response, setResponse] = useState("");
+
+
+
+// Added useEffect to initialize login state based on sessionStorage
+useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    const storedUser = sessionStorage.getItem('userName');
+
+    if (token && storedUser) {
+        setLoggedIn(true);
+        setUser(storedUser);
+    }
+}, []);
 
     const updatePass = (e: string) => {
         let word = e;
@@ -61,11 +74,11 @@ export default function Login() {
         if (user != "" && pass != "") {
             try {
                 var response = await fetch('https://localhost:7094/login/', {
-                    method: 'POST',
+                    method: 'POST', 
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                    },
+                    },  
                     body: JSON.stringify({
                         email: user + "@gmail.com",
                         password: pass,
@@ -74,11 +87,27 @@ export default function Login() {
                     })
                 })
 
-                if (response.ok) {
-                    setLoggedIn(true);
-                    setStatus("inactive");
-                     sessionStorage.setItem('userName', user);
-                }
+                    if (response.ok) {
+                        const data = await response.json();
+                        window.location.reload();
+                        console.log("Full Response Data:", data);  // Log the entire response data
+      
+               
+                        sessionStorage.setItem('token', data.accessToken);
+                
+
+                        sessionStorage.setItem('refreshToken', data.refreshToken);
+            
+
+                        sessionStorage.setItem('tokenType', data.tokenType);
+                    
+                        setLoggedIn(true);
+                        setStatus("inactive");
+                        sessionStorage.setItem('userName', user);
+                        console.log("Login process completed, user is now logged in.", user); 
+
+                        
+                    }
 
                 else {
                     setResponse("Invalid username or password");
@@ -113,6 +142,8 @@ export default function Login() {
 
         setLoggedIn(false);
         setStatus("inactive");
+        sessionStorage.clear();
+        window.location.reload();  // Reload the page to clear any user-specific data
     }
 
     const createUser = async (e: { preventDefault: () => void; }) => {
