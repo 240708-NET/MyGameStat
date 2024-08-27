@@ -44,6 +44,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      #check if the system is working
+    - name: dockerize-sanity-check
+      run: echo "dockerize sanity check"
+      
         # Specify the source code
     - name: Checkout Source
       uses: actions/checkout@v4
