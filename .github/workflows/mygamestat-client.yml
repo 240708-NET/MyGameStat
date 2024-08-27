@@ -6,10 +6,10 @@ defaults:
 
 on:
   push:
-    branches: [main]
+    branches: [workflow]
     paths: [src/Web/client/**]
   pull_request:
-    branches: [main]
+    branches: [workflow]
     paths: [src/Web/client/**]
 
   workflow_dispatch:
