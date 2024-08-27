@@ -1,55 +1,78 @@
 .container {
   color: #fff;
   display: flex;
-  justify-content: center;
-  align-items: flex-start; /* Align items to the top of the container */
-  height: 100vh; /* Full viewport height */
-  padding: 20px; /* Optional: Adjust padding for spacing */
-}
-
-.sidebar {
-  flex: 1;
-  display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 20px;
-  color: #fff;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px 50px;
+  transform: scale(0.83); 
+  transform-origin: top center;
 }
 
-.listContainer {
+.title {
+  font-size: 1.5rem;
   margin-bottom: 20px;
-  margin-left: 50%;
+  text-align: center;
+  color: #3faba2;
+}
+
+.analyticsContent {
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px; 
+}
+
+.statsContainer {
+  background-color: #252930; 
+  color: #3faba2; 
+  font-family: 'Courier New', Courier, monospace; 
+  padding: 20px; 
+  border-radius: 5px; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7); 
+  border: 1px solid #444; 
 }
 
 .listContainer h3 {
+  color: #ffffff; 
   margin-bottom: 10px;
-  font-size: 1.2rem;
+  font-size: 1.3rem; 
+}
+
+.listContainer ul li {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
 }
 
 .listContainer ul {
   list-style-type: none;
-  padding-left: 0;
+  padding-left: 0; 
 }
-
-.listContainer ul li {
-  margin-bottom: 5px;
-  font-size: 1rem;
-}
-
-.chartContainer {
-  flex: 3;
+.chartsContainer {
+  flex: 2;
   display: flex;
-  flex-direction: column; /* Stack the charts vertically */
-  justify-content: flex-start;
-  align-items: center;
+  flex-wrap: wrap; 
+  /* gap: 20px; */
 }
 
-.radarChartContainer, .pieChartContainer {
-  width: 100%; /* Ensure charts take up full available width */
-  margin-bottom: 20px; /* Add spacing between the RadarChart and PieChart */
+.chart {
+  flex: 1 1 48%; 
+  min-width: 300px;
+  padding: 20px;
+  border-radius: 8px;
 }
 
-.pieChartContainer {
-  margin-bottom: 0; /* No bottom margin on the last element */
+@media only screen and (max-width: 768px) {
+  .analyticsContent {
+    flex-direction: column;
+  }
+
+  .statsContainer, .chartsContainer {
+    width: 100%;
+  }
+
+  .chart {
+    width: 100%; 
+  }
 }
