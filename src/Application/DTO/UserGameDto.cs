@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using MyGameStat.Domain.Entity;
 
@@ -9,7 +10,7 @@ public class UserGameDto
     public required Status Status { get; set; }
     public required string Title { get; set; }
     public required string Genre { get; set; }
-    public required DateTimeOffset ReleaseDate { get; set; }
+    public required DateOnly ReleaseDate { get; set; }
     public required string Developer { get; set; }
     public required string Publisher { get; set; }
     public required string PlatformName { get; set; }

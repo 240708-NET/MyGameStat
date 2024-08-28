@@ -12,7 +12,7 @@ using MyGameStat.Infrastructure.Persistence;
 namespace MyGameStat.Web.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240826195951_Initial")]
+    [Migration("20240828043104_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -198,8 +198,8 @@ namespace MyGameStat.Web.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("ReleaseDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateOnly>("ReleaseDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Title")
                         .IsRequired()
