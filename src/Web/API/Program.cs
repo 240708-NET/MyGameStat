@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using MyGameStat.Domain.Entity;
 using MyGameStat.Infrastructure;
@@ -30,6 +31,12 @@ builder.Services.AddSwaggerGen(options =>
         Type = SecuritySchemeType.ApiKey
     });
     options.OperationFilter<SecurityRequirementsOperationFilter>();
+    options.MapType<DateOnly>(() => new OpenApiSchema
+    {
+        Type = "string",
+        Format = "date",
+        Example = new OpenApiString(DateTime.Today.Date.ToString("yyyy-MM-dd"))
+    });
 });
 
 builder.Services.AddInfrastructure(builder.Configuration);

@@ -6,6 +6,7 @@ using MyGameStat.Application.DTO;
 using MyGameStat.Application.Extension;
 using MyGameStat.Application.Service;
 using MyGameStat.Domain.Entity;
+using static System.String;
 
 namespace MyGameStat.Web.API.Controllers;
 
@@ -31,6 +32,12 @@ public class UserGameController(IUserGameService<UserGame, string> userGameServi
     [HttpPost("games")]
     public IActionResult CreateUserGame([FromBody] UserGameDto dto)
     {
+        if(!IsNullOrWhiteSpace(dto.Id))
+        {
+            return BadRequest($"Payload id must be blank but was (id: {dto.Id})");
+        }
+        dto.Id = null;
+
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var userGameId = userGameService.Upsert(userId, dto.ToModel());
         if(userGameId == null)
