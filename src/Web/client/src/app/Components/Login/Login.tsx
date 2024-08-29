@@ -88,25 +88,16 @@ useEffect(() => {
                 })
 
                     if (response.ok) {
-                        const data = await response.json();
                         window.location.reload();
+                        const data = await response.json();
                         console.log("Full Response Data:", data);  // Log the entire response data
-      
-               
                         sessionStorage.setItem('token', data.accessToken);
-                
-
                         sessionStorage.setItem('refreshToken', data.refreshToken);
-            
-
                         sessionStorage.setItem('tokenType', data.tokenType);
-                    
                         setLoggedIn(true);
                         setStatus("inactive");
                         sessionStorage.setItem('userName', user);
                         console.log("Login process completed, user is now logged in.", user); 
-
-                        
                     }
 
                 else {
@@ -180,8 +171,15 @@ useEffect(() => {
                 })
 
                 if (response.ok) {
+                    const data = await response.json();
+                    console.log("Full Response Data:", data);  // Log the entire response data
+                    sessionStorage.setItem('token', data.accessToken);
+                    sessionStorage.setItem('refreshToken', data.refreshToken);
+                    sessionStorage.setItem('tokenType', data.tokenType);
                     setLoggedIn(true);
                     setStatus("inactive");
+                    sessionStorage.setItem('userName', user);
+                    console.log("Login process completed, user is now logged in.", user); 
                 }
 
                 else {
