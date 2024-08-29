@@ -1,28 +1,38 @@
+# javascript
 **/node_modules/
-**/dist
-npm-debug.log
-.coverage
-.coverage.*
-.env
-.aws
-build
-scripts
-.git
-.gitignore
 .next
-README.md
-LICENSE
+.eslintrc.js
+
+# docker
 Dockerfile*
 docker-compose*
 .dockerignore
-*.log
-*.log*
-.vscode
-.DS_Store
-.gitignore
-.editorconfig
+
+# build/test/deploy
+**/dist
+build
+scripts
 .env
 .env.local
+.coverage
+.coverage.*
+.aws
+
+# git
+.git
+.gitignore
 .gitlab-ci.yml
-.eslintrc.js
+
+# log
+*.log
+*.log*
+
+# editor
+.vscode
+.editorconfig
 *.swp
+
+# other
+README.md
+LICENSE
+.DS_Store

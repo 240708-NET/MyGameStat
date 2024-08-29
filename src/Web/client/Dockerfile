@@ -1,14 +1,9 @@
 FROM node:alpine AS build
 WORKDIR /app
+# COPY below depends on .dockerignore to exclude node_modules, .next, etc.
 COPY . .
 RUN npm ci
 RUN npm run build
-
-FROM node:alpine AS run
-WORKDIR /app
-COPY --from=build /app/package*.json .
-COPY --from=build /app/.next .
-RUN npm ci
-ENTRYPOINT ["npm", "run", "start"] 
+ENTRYPOINT ["npm", "run", "start"]
 
 EXPOSE 3000

@@ -1,9 +1,9 @@
 FROM node:alpine
 WORKDIR /app
-COPY package*.json .
+# COPY below depends on .dockerignore to exclude node_modules, .next, etc.
+COPY . .
 RUN npm ci
 RUN npm run build
-COPY . .
 ENTRYPOINT ["npm", "run", "dev"]
 
 EXPOSE 3000
