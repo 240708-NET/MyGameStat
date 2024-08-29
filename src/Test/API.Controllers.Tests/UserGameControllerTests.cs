@@ -8,6 +8,7 @@ using MyGameStat.Application.Extension;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using MyGameStat.Application.Service;
+using MyGameStat.Application.DTO;
 
 namespace Test.API.Controllers.Tests {
     public class UserGameControllerTests {
@@ -118,35 +119,30 @@ namespace Test.API.Controllers.Tests {
         [Fact]
         public void CreateUserGame_Valid() {
             //  Arrange
-            Game game = new Game() {
-                CreatorId = "1",
+            var userId = "456-xyz";
+            var userGameId = "abc-678";
+            var noIdUserGameDto = new NoIdUserGameDto()
+            {
+                Status = Status.Owned,
+                PlatformName = "PC",
+                PlatformManufacturer = "PC",
                 Title = "Space Invaders",
                 Genre = "Arcade",
-                Developer = "Atari", 
+                ReleaseDate = new DateOnly(1978, 4, 1),
+                Developer =  "Atari",
                 Publisher = "Atari"
             };
+            var userGame = noIdUserGameDto.ToModel();
+            userGame.Id = userGameId;
 
-            Platform platform = new Platform() {
-                CreatorId = "1",
-                Name = "PC",
-                Manufacturer = "PC"
-            };
-
-            UserGame userGame = new UserGame() {
-                CreatorId = "1",
-                Game = game,
-                Platform = platform,
-                Status = Status.Owned,
-            };
-
-            _service.Setup(service => service.Upsert("1", It.IsAny<UserGame>())).Returns("1");
+            _service.Setup(service => service.Upsert(userId, It.IsAny<UserGame>())).Returns(userGame);
 
             var context = new ControllerContext {
                 HttpContext = new DefaultHttpContext {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {
+                    User = new ClaimsPrincipal(new ClaimsIdentity([
                         new Claim(ClaimTypes.Name, ""),
-                        new Claim(ClaimTypes.NameIdentifier, "1"),
-                    }, "mock")),
+                        new Claim(ClaimTypes.NameIdentifier, userId)
+                    ], "mock")),
                 }
             };
 
@@ -155,7 +151,7 @@ namespace Test.API.Controllers.Tests {
             };
 
             //  Act
-            var okResult = _controller.CreateUserGame(userGame.ToDto()) as CreatedResult;
+            var okResult = _controller.CreateUserGame(noIdUserGameDto) as CreatedResult;
 
             //  Assert
             Assert.NotNull(okResult);
@@ -213,36 +209,30 @@ namespace Test.API.Controllers.Tests {
         [Fact]
         public void UpdateGame_Valid() {
             //  Arrange
-            Game game = new Game() {
-                CreatorId = "1",
+            var userId = "456-xyz";
+            var userGameId = "abc-123";
+            var updateStatus = Status.Wishlist;
+            var noIdUserGameDto = new NoIdUserGameDto()
+            {
+                Status = updateStatus,
+                PlatformName = "PC",
+                PlatformManufacturer = "PC",
                 Title = "Space Invaders",
                 Genre = "Arcade",
-                Developer = "Atari", 
+                ReleaseDate = new DateOnly(1978, 4, 1),
+                Developer =  "Atari",
                 Publisher = "Atari"
             };
+            var userGame = noIdUserGameDto.ToModel();
 
-            Platform platform = new Platform() {
-                CreatorId = "1",
-                Name = "PC",
-                Manufacturer = "PC"
-            };
-
-            UserGame userGame = new UserGame() {
-                CreatorId = "1",
-                Game = game,
-                Platform = platform,
-                Status = Status.Owned,
-            };
-
-            _service.Setup(service => service.Upsert("1", It.IsAny<UserGame>())).Returns("1");
-            _service.Setup(service => service.Update("1", It.IsAny<UserGame>())).Returns(1);
+            _service.Setup(service => service.Update(userId, It.IsAny<UserGame>())).Returns(1);
 
             var context = new ControllerContext {
                 HttpContext = new DefaultHttpContext {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {
+                    User = new ClaimsPrincipal(new ClaimsIdentity([
                         new Claim(ClaimTypes.Name, "Bob"),
-                        new Claim(ClaimTypes.NameIdentifier, "1"),
-                    }, "mock")),
+                        new Claim(ClaimTypes.NameIdentifier, userId),
+                    ], "mock")),
                 }
             };
 
@@ -250,19 +240,12 @@ namespace Test.API.Controllers.Tests {
                 ControllerContext = context
             };
 
-            var okResult1 = _controller.CreateUserGame(userGame.ToDto()) as CreatedResult;
-
-            //  Create Assert
-            Assert.NotNull(okResult1);
-
             //  Update Act
-            userGame.Status = Status.Wishlist;
-
-            var okResult2 = _controller.UpdateUserGame("1", userGame.ToDto()) as OkResult;
+            var okResult = _controller.UpdateUserGame(userGameId, noIdUserGameDto) as OkObjectResult;
 
             //  Assert
-            Assert.NotNull(okResult2);
-            Assert.Equal((int)HttpStatusCode.OK, okResult2.StatusCode);
+            Assert.NotNull(okResult);
+            Assert.Equal((int)HttpStatusCode.OK, okResult.StatusCode);
         }
 
         //  UpdateGame_Invalid
@@ -318,68 +301,52 @@ namespace Test.API.Controllers.Tests {
         [Fact]
         public void DeleteGame_Valid() {
             //  Arrange
-            Game game = new Game() {
-                CreatorId = "1",
-                Title = "Space Invaders",
-                Genre = "Arcade",
-                Developer = "Atari", 
-                Publisher = "Atari"
-            };
-
-            Platform platform = new Platform() {
-                CreatorId = "1",
-                Name = "PC",
-                Manufacturer = "PC"
-            };
-
-            UserGame userGame = new UserGame() {
-                CreatorId = "1",
-                Game = game,
-                Platform = platform,
+            var userId = "456-xyz";
+            var userGameId = "abc-123";
+            UserGame userGame = new()
+            {
+                Id = userGameId,
+                CreatorId = userId,
+                Game = new()
+                {
+                    CreatorId = userId,
+                    Title = "Space Invaders",
+                    Genre = "Arcade",
+                    Developer = "Atari", 
+                    Publisher = "Atari"
+                },
+                Platform = new()
+                {
+                    CreatorId = userId,
+                    Name = "PC",
+                    Manufacturer = "PC"
+                },
                 Status = Status.Owned,
             };
 
-            _service.Setup(service => service.GetByUserIdAndFilter("1", Status.Owned, "Arcade", "PC")).Returns(new List<UserGame>() {
-                userGame
-            });
-            _service.Setup(service => service.Upsert("1", It.IsAny<UserGame>())).Returns("1");
-            _service.Setup(service => service.Update("1", It.IsAny<UserGame>())).Returns(1);
-            _service.Setup(service => service.Delete(It.IsAny<string>()));
+            _service.Setup(svc => svc.GetByUserIdAndFilter(userId, Status.Owned, "Arcade", "PC")).Returns([userGame]);
+            _service.Setup(svc => svc.Delete(userGameId)).Returns(1);
 
             var context = new ControllerContext {
                 HttpContext = new DefaultHttpContext {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] {
+                    User = new ClaimsPrincipal(new ClaimsIdentity([
                         new Claim(ClaimTypes.Name, "Bob"),
                         new Claim(ClaimTypes.NameIdentifier, "1"),
-                    }, "mock")),
+                    ], "mock")),
                 }
             };
 
             var _controller = new UserGameController(_service.Object){
                 ControllerContext = context
             };
-            
-            //  Create Act
-            var okResult1 = _controller.CreateUserGame(userGame.ToDto()) as CreatedResult;
-            //_mockRepo.Verify(service => service.Create(game), Times.Once);
-
-            //  Create Assert
-            Assert.NotNull(okResult1);
-            
-            //  Get Act
-            var okResult2 = _controller.GetUserGames(Status.Owned, "Arcade", "PC") as OkObjectResult;
-            _service.Verify(service => service.GetByUserIdAndFilter("1", Status.Owned, "Arcade", "PC"), Times.Once);
-
-            Assert.NotNull(okResult2);
-            Assert.Equal((int)HttpStatusCode.OK, okResult2.StatusCode);
 
             //  Delete Act
-            var okResult3 = _controller.DeleteUserGame("1") as OkResult;
+            var okResult = _controller.DeleteUserGame(userGameId) as OkObjectResult;
             //_mockRepo.Verify(service => service.Delete("1"), Times.Once);
 
             //  Assert
-            Assert.NotNull(okResult3);
-            Assert.Equal((int)HttpStatusCode.OK, okResult3.StatusCode);
+            Assert.NotNull(okResult);
+            Assert.Equal((int)HttpStatusCode.OK, okResult.StatusCode);
         }
     }
 }

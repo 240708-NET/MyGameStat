@@ -9,19 +9,19 @@ public class Repository<TEntity, Id> : QueryRepository<TEntity, Id>, IRepository
 {
     public Repository(ApplicationDbContext ctx) : base(ctx) {}
 
-    public virtual Id? Save(TEntity entity)
+    public virtual TEntity? Save(TEntity entity)
     {
         dbSet.Add(entity);
         ctx.SaveChanges();
-        return entity.Id;
+        return entity;
     }
 
-    public virtual void Delete(Id id)
+    public virtual int Delete(Id id)
     {
         var entity = GetById(id);
         if (entity is null)
         {
-            return;
+            return 0;
         }
 
         if(ctx.Entry(entity).State == EntityState.Detached)
@@ -30,7 +30,7 @@ public class Repository<TEntity, Id> : QueryRepository<TEntity, Id>, IRepository
         }
 
         dbSet.Remove(entity);
-        ctx.SaveChanges();
+        return ctx.SaveChanges();
     }
 
     public virtual int Update(TEntity update)
@@ -54,7 +54,6 @@ public class Repository<TEntity, Id> : QueryRepository<TEntity, Id>, IRepository
 
     public virtual TEntity? Retrieve(TEntity entity)
     {
-        // TODO: Does Find() handle a null argument?
         return dbSet.Find(entity.Id);
     }
 }

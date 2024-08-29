@@ -51,14 +51,14 @@ namespace Test.App.Service.Tests {
             _repoGame.Setup(service => service.Retrieve(It.IsAny<Game>())).Returns(game);
             _repoPlatform.Setup(service => service.Retrieve(It.IsAny<Platform>())).Returns(platform);
             _repoUGame.Setup(service => service.Retrieve(It.IsAny<UserGame>())).Returns(userGame);
-            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns("1");
+            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns(userGame);
 
             //  Act
             var result = _service.Upsert("1", userGame);
 
             //  Assert
             Assert.NotNull(result);
-            Assert.Equal("1", result);
+            Assert.Equal("1", result.Id);
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace Test.App.Service.Tests {
             _repoGame.Setup(service => service.Retrieve(It.IsAny<Game>())).Returns(game);
             _repoPlatform.Setup(service => service.Retrieve(It.IsAny<Platform>())).Returns(platform);
             _repoUGame.Setup(service => service.Retrieve(It.IsAny<UserGame>())).Returns(userGame);
-            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns("1");
+            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns(userGame);
 
             //  Act
             var result = _service.Upsert(null, userGame);
@@ -134,7 +134,7 @@ namespace Test.App.Service.Tests {
             _repoGame.Setup(service => service.Retrieve(It.IsAny<Game>())).Returns(game2);
             _repoPlatform.Setup(service => service.Retrieve(It.IsAny<Platform>())).Returns(platform);
             _repoUGame.Setup(service => service.Retrieve(It.IsAny<UserGame>())).Returns(userGame);
-            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns("1");
+            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns(userGame);
 
             //  Act
             var result = _service.Upsert("1", userGame);
@@ -177,7 +177,7 @@ namespace Test.App.Service.Tests {
             _repoGame.Setup(service => service.Retrieve(It.IsAny<Game>())).Returns(game);
             _repoPlatform.Setup(service => service.Retrieve(It.IsAny<Platform>())).Returns(platform2);
             _repoUGame.Setup(service => service.Retrieve(It.IsAny<UserGame>())).Returns(userGame);
-            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns("1");
+            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns(userGame);
 
             //  Act
             var result = _service.Upsert("1", userGame);
@@ -228,7 +228,7 @@ namespace Test.App.Service.Tests {
             _repoGame.Setup(service => service.Retrieve(It.IsAny<Game>())).Returns(game);
             _repoPlatform.Setup(service => service.Retrieve(It.IsAny<Platform>())).Returns(platform1);
             _repoUGame.Setup(service => service.Retrieve(It.IsAny<UserGame>())).Returns(userGame2);
-            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns("1");
+            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns(userGame1);
 
             //  Act
             var result = _service.Upsert("1", userGame1);
@@ -265,7 +265,7 @@ namespace Test.App.Service.Tests {
             _repoGame.Setup(service => service.Retrieve(It.IsAny<Game>())).Returns(game);
             _repoPlatform.Setup(service => service.Retrieve(It.IsAny<Platform>())).Returns(platform);
             _repoUGame.Setup(service => service.Retrieve(It.IsAny<UserGame>())).Returns(userGame);
-            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns("1");
+            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns(userGame);
             _repoUGame.Setup(service => service.Delete(It.IsAny<string>()));
 
             //  Create Act
@@ -273,7 +273,7 @@ namespace Test.App.Service.Tests {
 
             //  Create Assert
             Assert.NotNull(upsert);
-            Assert.Equal("1", upsert);
+            Assert.Equal("1", upsert.Id);
 
             //  Delete Act
             _service.Delete("1");
@@ -347,7 +347,7 @@ namespace Test.App.Service.Tests {
             _repoGame.Setup(service => service.Retrieve(It.IsAny<Game>())).Returns(game);
             _repoPlatform.Setup(service => service.Retrieve(It.IsAny<Platform>())).Returns(platform);
             _repoUGame.Setup(service => service.Retrieve(It.IsAny<UserGame>())).Returns(userGame);
-            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns("1");
+            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns(userGame);
             _repoUGame.Setup(service => service.Update(It.IsAny<UserGame>())).Returns(1);
             _repoUGame.Setup(service => service.GetById("1")).Returns(userGame);
 
@@ -356,7 +356,7 @@ namespace Test.App.Service.Tests {
 
             //  Create Assert
             Assert.NotNull(upsert);
-            Assert.Equal("1", upsert);
+            Assert.Equal("1", upsert.Id);
 
             //  Update Act
             userGame.Status = Status.Completed;
@@ -395,7 +395,7 @@ namespace Test.App.Service.Tests {
             _repoGame.Setup(service => service.Retrieve(It.IsAny<Game>())).Returns(game);
             _repoPlatform.Setup(service => service.Retrieve(It.IsAny<Platform>())).Returns(platform);
             _repoUGame.Setup(service => service.Retrieve(It.IsAny<UserGame>())).Returns(userGame);
-            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns("1");
+            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns(userGame);
             _repoUGame.Setup(service => service.Update(It.IsAny<UserGame>())).Returns(1);
             _repoUGame.Setup(service => service.GetById("1")).Returns(userGame);
 
@@ -404,7 +404,7 @@ namespace Test.App.Service.Tests {
 
             //  Create Assert
             Assert.NotNull(upsert);
-            Assert.Equal("1", upsert);
+            Assert.Equal("1", upsert.Id);
 
             //  Update Act
             userGame.Status = Status.Completed;
@@ -443,7 +443,7 @@ namespace Test.App.Service.Tests {
             _repoGame.Setup(service => service.Retrieve(It.IsAny<Game>())).Returns(game);
             _repoPlatform.Setup(service => service.Retrieve(It.IsAny<Platform>())).Returns(platform);
             _repoUGame.Setup(service => service.Retrieve(It.IsAny<UserGame>())).Returns(userGame);
-            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns("1");
+            _repoUGame.Setup(service => service.Save(It.IsAny<UserGame>())).Returns(userGame);
             _repoUGame.Setup(service => service.Update(It.IsAny<UserGame>())).Returns(1);
 
             //  Create Act
@@ -451,7 +451,7 @@ namespace Test.App.Service.Tests {
 
             //  Create Assert
             Assert.NotNull(upsert);
-            Assert.Equal("1", upsert);
+            Assert.Equal("1", upsert.Id);
 
             //  Update Act
             userGame.Status = Status.Completed;

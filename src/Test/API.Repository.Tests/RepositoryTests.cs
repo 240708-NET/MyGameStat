@@ -24,11 +24,11 @@ namespace Test.API.Repository.Tests {
             using (var context = new ApplicationDbContext(_options)) {
                 //  Act
                 PlatformRepository repo = new PlatformRepository(context);
-                string? platform = repo.Save(platform1);
+                Platform? platform = repo.Save(platform1);
 
                 //  Assert
                 Assert.NotNull(platform);
-                Assert.Equal("1", platform);
+                Assert.Equal("1", platform.Id);
             }
         }
 

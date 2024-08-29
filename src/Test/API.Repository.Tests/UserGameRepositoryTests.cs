@@ -1,10 +1,10 @@
-using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using MyGameStat.Domain.Entity;
 using MyGameStat.Infrastructure.Persistence;
 using MyGameStat.Infrastructure.Repository;
 
-namespace Test.API.Repository.Tests {
+namespace Test.API.Repository.Tests
+{
     public class UserGameRepositoryTests {
         private DbContextOptions<ApplicationDbContext>? _options;
 
