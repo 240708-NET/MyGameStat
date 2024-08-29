@@ -73,7 +73,7 @@ useEffect(() => {
 
         if (user != "" && pass != "") {
             try {
-                var response = await fetch('https://localhost:7094/login/', {
+                var response = await fetch('https://mygamestat-backend-bfbjbxdybnesgvha.eastus-01.azurewebsites.net/login/', {
                     method: 'POST', 
                     headers: {
                         'Accept': 'application/json',
@@ -88,25 +88,16 @@ useEffect(() => {
                 })
 
                     if (response.ok) {
-                        const data = await response.json();
                         window.location.reload();
+                        const data = await response.json();
                         console.log("Full Response Data:", data);  // Log the entire response data
-      
-               
                         sessionStorage.setItem('token', data.accessToken);
-                
-
                         sessionStorage.setItem('refreshToken', data.refreshToken);
-            
-
                         sessionStorage.setItem('tokenType', data.tokenType);
-                    
                         setLoggedIn(true);
                         setStatus("inactive");
                         sessionStorage.setItem('userName', user);
                         console.log("Login process completed, user is now logged in.", user); 
-
-                        
                     }
 
                 else {
@@ -153,7 +144,7 @@ useEffect(() => {
 
         if (user != "" && pass != "") {
             try {
-                await fetch('https://localhost:7094/register', {
+                await fetch('https://mygamestat-backend-bfbjbxdybnesgvha.eastus-01.azurewebsites.net/register', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -165,7 +156,7 @@ useEffect(() => {
                     })
                 })
 
-                var response = await fetch('https://localhost:7094/login/', {
+                var response = await fetch('https://mygamestat-backend-bfbjbxdybnesgvha.eastus-01.azurewebsites.net/login/', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -180,8 +171,15 @@ useEffect(() => {
                 })
 
                 if (response.ok) {
+                    const data = await response.json();
+                    console.log("Full Response Data:", data);  // Log the entire response data
+                    sessionStorage.setItem('token', data.accessToken);
+                    sessionStorage.setItem('refreshToken', data.refreshToken);
+                    sessionStorage.setItem('tokenType', data.tokenType);
                     setLoggedIn(true);
                     setStatus("inactive");
+                    sessionStorage.setItem('userName', user);
+                    console.log("Login process completed, user is now logged in.", user); 
                 }
 
                 else {

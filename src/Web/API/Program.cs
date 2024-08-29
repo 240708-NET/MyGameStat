@@ -54,7 +54,7 @@ builder.Services.AddCors(options =>
                       policy  =>  
                       {  
                         //we must allow communication from any origin (.SetIsOriginAllowed (hostname => true)  checks origins individually and checks credential )
-                          policy.WithOrigins("http://localhost:3000" )
+                          policy.WithOrigins("http://localhost:3000", "https://mygamestat-frontend-fccjdncff0hrhzfa.eastus-01.azurewebsites.net" )
                           .AllowCredentials()
                           .AllowAnyMethod()
                           .AllowAnyHeader();
