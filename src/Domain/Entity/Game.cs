@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using MyGameStat.Domain.Common;
 
 namespace MyGameStat.Domain.Entity;

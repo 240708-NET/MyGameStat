@@ -1,12 +1,11 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using MyGameStat.Application.DTO;
 using MyGameStat.Application.Extension;
 using MyGameStat.Application.Service;
 using MyGameStat.Domain.Entity;
-using static System.String;
 
 namespace MyGameStat.Web.API.Controllers;
 
@@ -25,43 +24,47 @@ public class UserGameController(IUserGameService<UserGame, string> userGameServi
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var userGames = userGameService.GetByUserIdAndFilter(userId, status, genre, platformName);
         var dto = userGames.ToDto();
-        return !userGames.IsNullOrEmpty() ? Ok(dto) : NotFound("No user games found");
+        return dto.Any() ? Ok(dto) : NotFound($"No usergames found for user: {userId}.");
     }
 
     [Authorize]
     [HttpPost("games")]
-    public IActionResult CreateUserGame([FromBody] UserGameDto dto)
+    public IActionResult CreateUserGame([FromBody] NoIdUserGameDto dto)
     {
-        if(!IsNullOrWhiteSpace(dto.Id))
-        {
-            return BadRequest($"Payload id must be blank but was (id: {dto.Id})");
-        }
-        dto.Id = null;
-
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var userGameId = userGameService.Upsert(userId, dto.ToModel());
-        if(userGameId == null)
+        var userGame = userGameService.Upsert(userId, dto.ToModel());
+        if(userGame == null)
         {
-            return UnprocessableEntity($"userId: {userId}");
+            return UnprocessableEntity($"Failed to create usergame for user: {userId}.");
         }
-        return Created();
+        return base.Created(Request.GetEncodedUrl() + $"/{userGame.Id}", userGame.ToDto());
     }
 
     [Authorize]
     [HttpPut("games/{id}")]
-    public IActionResult UpdateUserGame(string id, [FromBody] UserGameDto dto)
+    public IActionResult UpdateUserGame(string id, [FromBody] NoIdUserGameDto dto)
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        dto.Id = id;
-        userGameService.Update(userId, dto.ToModel());
-        return Ok();
+        var userGame = dto.ToModel();
+        userGame.Id = id;
+        int updates = userGameService.Update(userId, userGame);
+        if(updates > 0)
+        {
+            return Ok($"Updated usergame: {id} for user: {userId}.");
+        }
+        return UnprocessableEntity($"Failed to update usergame: {id} for user: {userId}.");
     }
 
     [Authorize]
     [HttpDelete("games/{id}")]
     public IActionResult DeleteUserGame(string id)
     {
-        userGameService.Delete(id);
-        return Ok();
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int deletes = userGameService.Delete(id);
+        if(deletes > 0)
+        {
+            return Ok($"Deleted usergame: {id} for user: {userId}.");
+        }
+        return UnprocessableEntity($"Failed to delete usergame: {id} for user: {userId}. May have been deleted already.");
     }
 }

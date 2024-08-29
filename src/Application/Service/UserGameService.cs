@@ -1,6 +1,7 @@
 using MyGameStat.Application.Extension;
 using MyGameStat.Application.Repository;
 using MyGameStat.Domain.Entity;
+using static System.String;
 
 namespace MyGameStat.Application.Service;
 
@@ -21,7 +22,7 @@ public class UserGameService : IUserGameService<UserGame, string>
         this.platformRepository = platformRepository;
     }
 
-    public string? Upsert(string? userId, UserGame userGame)
+    public UserGame? Upsert(string? userId, UserGame userGame)
     {
         if(userId == null)
         {
@@ -47,15 +48,15 @@ public class UserGameService : IUserGameService<UserGame, string>
         {
             retrievedUserGame.SetValues(userGame);
             userGameRepository.Update(retrievedUserGame);
-            return retrievedUserGame.Id;
+            return retrievedUserGame;
         }
 
         return userGameRepository.Save(userGame);
     }
 
-    public void Delete(string id)
+    public int Delete(string id)
     {
-        userGameRepository.Delete(id);
+        return userGameRepository.Delete(id);
     }
 
     public ICollection<UserGame> GetByUserIdAndFilter(string? userId, Status? status, string? genre, string? platformName)
@@ -65,7 +66,7 @@ public class UserGameService : IUserGameService<UserGame, string>
 
     public int Update(string? userId, UserGame upToDate)
     {
-        if(string.IsNullOrWhiteSpace(userId))
+        if(IsNullOrWhiteSpace(userId))
         {
             return 0;
         }

@@ -4,8 +4,8 @@ namespace MyGameStat.Application.Repository;
 
 public interface IRepository<TEntity, ID> : IQueryRepository<TEntity, ID> where TEntity : BaseEntity<ID>
 {
-    ID? Save(TEntity entity);
+    TEntity? Save(TEntity entity);
     int Update(TEntity entity);
-    void Delete(ID id);
+    int Delete(ID id);
     TEntity? Retrieve(TEntity entity);
 }

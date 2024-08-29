@@ -21,7 +21,7 @@ public class UserGameRepository(ApplicationDbContext ctx) : Repository<UserGame,
                 .Include(u => u.Game)
                 .Include(u => u.Platform)
                 .SingleOrDefault(e =>
-                    e.CreatorId.Equals(userGame.CreatorId) &&
+                    e.CreatorId != null && e.CreatorId.Equals(userGame.CreatorId) &&
                     e.Game.Id != null && e.Game.Id.Equals(userGame.Game.Id) &&
                     e.Platform.Id != null && e.Platform.Id.Equals(userGame.Platform.Id));
     }

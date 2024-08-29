@@ -5,22 +5,39 @@ namespace MyGameStat.Application.Extension;
 
 public static class DtoExtension
 {
+    public static NoIdUserGameDto ToNoIdDto(this UserGame userGame)
+    {
+        return new NoIdUserGameDto
+        {
+            Title = userGame.Game.Title,
+            Genre = userGame.Game.Genre,
+            ReleaseDate = userGame.Game.ReleaseDate,
+            Developer = userGame.Game.Developer,
+            Publisher = userGame.Game.Publisher,
+            PlatformName = userGame.Platform.Name,
+            PlatformManufacturer = userGame.Platform.Manufacturer,
+            Status = userGame.Status
+        };
+    }
+
     public static UserGameDto ToDto(this UserGame userGame)
     {
         return new UserGameDto
         {
+            #pragma warning disable CS8601 // Possible null reference assignment.
             Id = userGame.Id,
-            UserId = userGame.CreatorId,
-            GameId = userGame.Game.Id,
-            PlatformId = userGame.Platform.Id,
-            Status = userGame.Status,
-            PlatformName = userGame.Platform.Name,
-            PlatformManufacturer = userGame.Platform.Manufacturer,
             Title = userGame.Game.Title,
             Genre = userGame.Game.Genre,
             ReleaseDate = userGame.Game.ReleaseDate,
-            Developer =  userGame.Game.Developer,
+            Developer = userGame.Game.Developer,
             Publisher = userGame.Game.Publisher,
+            PlatformName = userGame.Platform.Name,
+            PlatformManufacturer = userGame.Platform.Manufacturer,
+            Status = userGame.Status,
+            UserId = userGame.CreatorId,
+            GameId = userGame.Game.Id,
+            PlatformId = userGame.Platform.Id
+            #pragma warning restore CS8601 // Possible null reference assignment.
         };
     }
 
@@ -34,25 +51,19 @@ public static class DtoExtension
         return userGameDtos;
     }
 
-    
-    public static UserGame ToModel(this UserGameDto dto)
+    public static UserGame ToModel(this NoIdUserGameDto dto)
     {
         #pragma warning disable CS8601 // Possible null reference assignment.
         return new UserGame
         {
-            Id = dto.Id,
-            CreatorId = dto.Id,
             Status = dto.Status,
             Platform = new Platform
             {
-                CreatorId = dto.Id,
                 Name = dto.PlatformName,
                 Manufacturer = dto.PlatformManufacturer
             },
             Game = new Game
             {
-                CreatorId = dto.Id,
-                Id = dto.GameId,
                 Title = dto.Title,
                 Genre = dto.Genre,
                 ReleaseDate = dto.ReleaseDate,
