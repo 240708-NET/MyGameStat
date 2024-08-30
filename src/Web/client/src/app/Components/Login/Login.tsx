@@ -73,7 +73,7 @@ useEffect(() => {
 
         if (user != "" && pass != "") {
             try {
-                var response = await fetch('https://localhost:7094/login/', {
+                var response = await fetch('https://mygamestat-backend-bfbjbxdybnesgvha.eastus-01.azurewebsites.net/login/', {
                     method: 'POST', 
                     headers: {
                         'Accept': 'application/json',
@@ -153,7 +153,7 @@ useEffect(() => {
 
         if (user != "" && pass != "") {
             try {
-                await fetch('https://localhost:7094/register', {
+                await fetch('https://mygamestat-backend-bfbjbxdybnesgvha.eastus-01.azurewebsites.net/register', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -165,7 +165,7 @@ useEffect(() => {
                     })
                 })
 
-                var response = await fetch('https://localhost:7094/login/', {
+                var response = await fetch('https://mygamestat-backend-bfbjbxdybnesgvha.eastus-01.azurewebsites.net/login/', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

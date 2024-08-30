@@ -9,7 +9,8 @@ using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.UseUrls("http://*:5101", "https://*:7094");
+
+builder.WebHost.UseUrls("http://*:5101");
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -54,7 +55,7 @@ builder.Services.AddCors(options =>
                       policy  =>  
                       {  
                         //we must allow communication from any origin (.SetIsOriginAllowed (hostname => true)  checks origins individually and checks credential )
-                          policy.WithOrigins("http://localhost:3000" )
+                          policy.WithOrigins("http://localhost:3000","https://mygamestat-frontend-fccjdncff0hrhzfa.eastus-01.azurewebsites.net" )
                           .AllowCredentials()
                           .AllowAnyMethod()
                           .AllowAnyHeader();
@@ -72,7 +73,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
